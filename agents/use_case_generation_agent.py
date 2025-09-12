@@ -5,7 +5,7 @@ import logging
 from typing import Dict, List, Any, Optional
 from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
-from utils.web_searcher import WebSearcher
+from utils.exa_searcher import ExaSearcher
 from config import config
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ class UseCaseGenerationAgent:
             api_key=config.OPENAI_API_KEY,
             temperature=0.4  # Slightly more creative for use case generation
         )
-        self.web_searcher = WebSearcher()
+        self.web_searcher = ExaSearcher()
         
     def generate_use_cases(self, company_research: Dict[str, Any]) -> Dict[str, Any]:
         """
@@ -42,18 +42,25 @@ class UseCaseGenerationAgent:
             company_analysis = company_research.get('company_analysis', {})
             industry = company_analysis.get('industry', 'Unknown')
             
-            # Step 1: Search for AI trends in the industry
+            # Step 1: Research current AI capabilities to avoid redundant suggestions
+            current_capabilities = self.web_searcher.search_current_capabilities(
+                company_name, 
+                "AI machine learning technology"
+            )
+            
+            # Step 2: Search for AI trends in the industry
             ai_trends = self.web_searcher.search_industry_trends(industry)
             
-            # Step 2: Search for specific AI use cases in the industry
+            # Step 3: Search for specific AI use cases in the industry
             use_case_research = self.web_searcher.search_ai_use_cases(
                 industry, 
                 company_analysis.get('company_description', '')
             )
             
-            # Step 3: Generate contextual use cases using LLM
+            # Step 4: Generate contextual use cases using LLM
             use_cases = self._generate_contextual_use_cases(
                 company_research, 
+                current_capabilities,
                 ai_trends, 
                 use_case_research
             )
@@ -90,6 +97,7 @@ class UseCaseGenerationAgent:
     def _generate_contextual_use_cases(
         self, 
         company_research: Dict[str, Any], 
+        current_capabilities: List[Dict[str, Any]],
         ai_trends: List[Dict[str, Any]], 
         use_case_research: List[Dict[str, Any]]
     ) -> List[Dict[str, Any]]:
@@ -98,6 +106,7 @@ class UseCaseGenerationAgent:
         
         Args:
             company_research: Company background data
+            current_capabilities: Current AI/tech capabilities of the company
             ai_trends: Industry AI trend data
             use_case_research: Existing AI use case examples
             
@@ -117,6 +126,7 @@ Key Products/Services: {company_analysis.get('key_products_services', 'N/A')}
 Market Position: {company_analysis.get('market_position', 'N/A')}
 """
         
+        current_capabilities_summary = self.web_searcher.get_search_summary(current_capabilities)
         trends_summary = self.web_searcher.get_search_summary(ai_trends)
         use_cases_summary = self.web_searcher.get_search_summary(use_case_research)
         
@@ -127,6 +137,7 @@ Your task is to generate exactly 5 specific, actionable AI/ML use cases that are
 2. Technically feasible with current AI/ML technologies
 3. Aligned with industry trends and best practices
 4. Focused on solving real business problems or creating value
+5. **CRITICAL**: DO NOT suggest capabilities the company already has - check current capabilities first
 
 For each use case, provide:
 - Use case name (concise, descriptive)
@@ -135,12 +146,15 @@ For each use case, provide:
 - Expected business impact
 - Implementation complexity (Low/Medium/High)
 
-Base your recommendations on the provided company context and industry research."""
+Base your recommendations on the provided company context and industry research. Avoid redundant suggestions."""
 
         user_prompt = f"""
 Generate 5 AI/ML use cases for the following company:
 
 {company_context}
+
+**IMPORTANT - Current AI Capabilities (DO NOT suggest these):**
+{current_capabilities_summary}
 
 Consider these industry AI trends:
 {trends_summary}
@@ -150,6 +164,7 @@ And these existing AI use case examples in similar industries:
 
 Provide 5 specific, actionable AI/ML use cases that would be valuable for {company_name}. 
 Each use case should be tailored to their specific business context and industry.
+**AVOID suggesting anything they already have implemented.**
 
 Format each use case as:
 **Use Case [Number]: [Name]**

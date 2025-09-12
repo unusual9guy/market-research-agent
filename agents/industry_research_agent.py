@@ -5,7 +5,7 @@ import logging
 from typing import Dict, List, Any, Optional
 from langchain_openai import ChatOpenAI
 from langchain.schema import HumanMessage, SystemMessage
-from utils.web_searcher import WebSearcher
+from utils.exa_searcher import ExaSearcher
 from config import config
 
 logger = logging.getLogger(__name__)
@@ -23,7 +23,7 @@ class IndustryResearchAgent:
             api_key=config.OPENAI_API_KEY,
             temperature=0.3
         )
-        self.web_searcher = WebSearcher()
+        self.web_searcher = ExaSearcher()
         
     def research_company(self, company_name: str) -> Dict[str, Any]:
         """
