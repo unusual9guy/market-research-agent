@@ -14,6 +14,7 @@ class Config:
     # API Keys
     OPENAI_API_KEY: Optional[str] = os.getenv("OPENAI_API_KEY")
     TAVILY_API_KEY: Optional[str] = os.getenv("TAVILY_API_KEY") 
+    EXA_API_KEY: Optional[str] = os.getenv("EXA_API_KEY")
     GITHUB_TOKEN: Optional[str] = os.getenv("GITHUB_TOKEN")
     
     # Optional API Keys
