@@ -14,15 +14,21 @@ class ExaSearcher:
     
     def __init__(self):
         """Initialize the Exa searcher."""
-        # For now, we'll use a demo key or environment variable
-        # You'll need to set EXA_API_KEY in your .env file
-        exa_api_key = config.config.__dict__.get('EXA_API_KEY') or "demo-key"
+        # Get API key from config properly
+        exa_api_key = config.EXA_API_KEY
+        
+        if not exa_api_key:
+            logger.warning("EXA_API_KEY not found in environment variables")
+            self.client = None
+            self.max_results = config.MAX_SEARCH_RESULTS
+            return
         
         try:
             self.client = Exa(api_key=exa_api_key)
             self.max_results = config.MAX_SEARCH_RESULTS
+            logger.info("Exa client initialized successfully")
         except Exception as e:
-            logger.warning(f"Exa client initialization failed: {e}")
+            logger.error(f"Exa client initialization failed: {e}")
             self.client = None
     
     def search_company_info(self, company_name: str) -> List[Dict[str, Any]]:
