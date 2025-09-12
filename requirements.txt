@@ -6,7 +6,9 @@ langchain-community
 
 # Web Search APIs
 tavily-python
+exa-py
 beautifulsoup4
+requests
 
 # Streamlit for UI
 streamlit
