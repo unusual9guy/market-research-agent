@@ -17,3 +17,4 @@ streamlit-chat
 # Data Processing
 pandas
 python-dotenv
+pydantic
