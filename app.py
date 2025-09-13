@@ -73,8 +73,13 @@ def main():
         # Company input
         st.header("🏢 Company/Industry Analysis")
         
+        # Initialize session state for company name (for example buttons only)
+        if 'selected_company' not in st.session_state:
+            st.session_state.selected_company = ""
+        
         company_name = st.text_input(
             "Enter Company Name or Industry:",
+            value=st.session_state.selected_company,
             placeholder="e.g., Tesla, Automotive Industry, Netflix, Streaming Industry",
             help="Enter the name of any company or industry for AI market research analysis"
         )
@@ -116,7 +121,9 @@ def main():
         
         for i, example in enumerate(examples):
             with example_cols[i]:
-                st.info(f"📊 {example}")
+                if st.button(f"📊 {example}", key=f"example_{example}"):
+                    st.session_state.selected_company = example
+                    st.rerun()
         
         # System capabilities
         st.markdown("### 🔧 System Capabilities")
