@@ -53,11 +53,6 @@ def main():
     st.markdown('<h1 class="main-header">🤖 AI-Powered Market Research Agent</h1>', unsafe_allow_html=True)
     st.markdown("### Multi-Agent System for Automated Market Research & AI Use Case Generation")
     
-    # Check if we have existing results to display
-    if st.session_state.get('analysis_results'):
-        st.info("📊 **Previous analysis results available below** - Run new analysis or scroll down to view results")
-        st.markdown("---")
-    
     # Agent progress log container (will be populated during analysis)
     if 'agent_progress_log' not in st.session_state:
         st.session_state.agent_progress_log = []
@@ -78,13 +73,8 @@ def main():
         # Company input
         st.header("🏢 Company/Industry Analysis")
         
-        # Initialize session state for company name
-        if 'selected_company' not in st.session_state:
-            st.session_state.selected_company = ""
-        
         company_name = st.text_input(
             "Enter Company Name or Industry:",
-            value=st.session_state.selected_company,
             placeholder="e.g., Tesla, Automotive Industry, Netflix, Streaming Industry",
             help="Enter the name of any company or industry for AI market research analysis"
         )
@@ -93,12 +83,6 @@ def main():
         with st.expander("🔧 Advanced Options"):
             show_debug = st.checkbox("Show debug information", value=False)
             save_report = st.checkbox("Save Report to File", value=True, help="Automatically save report to outputs folder")
-        
-        # Clear results button
-        if st.session_state.get('analysis_results'):
-            if st.button("🗑️ Clear Previous Results"):
-                st.session_state.analysis_results = None
-                st.rerun()
         
         # Analysis button
         analyze_button = st.button(
@@ -132,9 +116,7 @@ def main():
         
         for i, example in enumerate(examples):
             with example_cols[i]:
-                if st.button(f"📊 {example}", key=f"example_{example}"):
-                    st.session_state.selected_company = example
-                    st.rerun()
+                st.info(f"📊 {example}")
         
         # System capabilities
         st.markdown("### 🔧 System Capabilities")
@@ -154,22 +136,6 @@ def main():
         # Run analysis
         if company_name.strip():
             run_market_research_analysis(company_name.strip(), show_debug, save_report)
-    
-    # Display existing results if available
-    if st.session_state.get('analysis_results'):
-        st.markdown("---")
-        st.markdown('<h2 class="section-header">📊 Previous Analysis Results</h2>', unsafe_allow_html=True)
-        
-        results = st.session_state.analysis_results
-        display_analysis_results(
-            results['company_name'],
-            results['deep_research'],
-            results['strategic_use_cases'],
-            results['dataset_results'],
-            results['comprehensive_report'],
-            results['save_report'],
-            is_previous_results=True
-        )
 
 def run_market_research_analysis(company_name: str, show_debug: bool, save_report: bool):
     """Run the complete market research analysis."""
@@ -179,9 +145,6 @@ def run_market_research_analysis(company_name: str, show_debug: bool, save_repor
     status_text = st.empty()
     log_container = st.empty()  # Container for detailed agent logs
     
-    # Initialize session state for results persistence
-    if 'analysis_results' not in st.session_state:
-        st.session_state.analysis_results = None
     
     try:
         # Initialize agents
@@ -274,16 +237,6 @@ def run_market_research_analysis(company_name: str, show_debug: bool, save_repor
         status_text.text("✅ Analysis completed successfully!")
         log_container.success("🎉 **ALL SYSTEMS COMPLETE**: 3-agent analysis finished successfully!")
         
-        # Store results in session state to persist after downloads
-        st.session_state.analysis_results = {
-            'company_name': company_name,
-            'deep_research': deep_research,
-            'strategic_use_cases': strategic_use_cases,
-            'dataset_results': dataset_results,
-            'comprehensive_report': comprehensive_report,
-            'save_report': save_report
-        }
-        
         # Display results
         display_analysis_results(
             company_name, deep_research, strategic_use_cases, 
@@ -301,8 +254,7 @@ def display_analysis_results(
     strategic_use_cases: Dict, 
     dataset_results: Dict,
     comprehensive_report: str, 
-    save_report: bool,
-    is_previous_results: bool = False
+    save_report: bool
 ):
     """Display the analysis results in a structured format."""
     
@@ -462,16 +414,12 @@ def display_analysis_results(
             comprehensive_report, dataset_results
         )
         
-        # Generate unique key based on whether this is previous results or current
-        download_key = f"download_previous_{company_name.replace(' ', '_')}" if is_previous_results else f"download_main_{company_name.replace(' ', '_')}"
-        
         st.download_button(
             label="📥 Download Complete Report",
             data=enhanced_report,
             file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.md",
             mime="text/markdown",
-            help="Download the complete report with datasets as a Markdown file",
-            key=download_key
+            help="Download the complete report with datasets as a Markdown file"
         )
         
         # Implementation roadmap
