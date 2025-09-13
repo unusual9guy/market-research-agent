@@ -7,8 +7,10 @@ automated market research and AI use case generation.
 
 from .enhanced_industry_agent import EnhancedIndustryResearchAgent
 from .enhanced_use_case_agent import EnhancedUseCaseGenerationAgent
+from .resource_discovery_agent import ResourceDiscoveryAgent
 
 __all__ = [
     "EnhancedIndustryResearchAgent",
-    "EnhancedUseCaseGenerationAgent"
+    "EnhancedUseCaseGenerationAgent", 
+    "ResourceDiscoveryAgent"
 ]
