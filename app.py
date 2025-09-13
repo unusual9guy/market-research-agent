@@ -295,7 +295,7 @@ def display_analysis_results(
                 with score_col1:
                     # Extract just the first word (High, Medium, Low) for display
                     innovation_full = use_case.get('innovation_level', 'Unknown')
-                    innovation_display = innovation_full.split(' - ')[0] if ' - ' in innovation_full else innovation_full.split()[0] if innovation_full else 'Unknown'
+                    innovation_display = innovation_full.split()[0] if innovation_full and innovation_full.strip() else 'Unknown'
                     st.metric("Innovation", innovation_display)
                 with score_col2:
                     st.metric("Overall Score", f"{use_case.get('overall_score', 0):.1%}")
