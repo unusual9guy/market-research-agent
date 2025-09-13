@@ -6,6 +6,7 @@ from agents.enhanced_industry_agent import EnhancedIndustryResearchAgent
 from agents.enhanced_use_case_agent import EnhancedUseCaseGenerationAgent
 from utils.report_generator import ReportGenerator
 from config import config
+import os
 
 # Set up logging
 logging.basicConfig(level=logging.INFO)
@@ -79,7 +80,8 @@ def test_formatted_report_system():
         print("="*80)
         
         # Save report to file
-        report_filename = f"{test_company.lower()}_ai_market_research_report.md"
+        os.makedirs('outputs', exist_ok=True)
+        report_filename = f"outputs/{test_company.lower()}_ai_market_research_report.md"
         with open(report_filename, 'w', encoding='utf-8') as f:
             f.write(comprehensive_report)
         

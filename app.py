@@ -312,7 +312,10 @@ def display_analysis_results(
         
         # Save report
         if save_report:
-            filename = f"{company_name.lower().replace(' ', '_')}_ai_market_research_report.md"
+            import os
+            # Ensure outputs directory exists
+            os.makedirs('outputs', exist_ok=True)
+            filename = f"outputs/{company_name.lower().replace(' ', '_')}_ai_market_research_report.md"
             with open(filename, 'w', encoding='utf-8') as f:
                 f.write(comprehensive_report)
             st.success(f"✅ Report saved as: {filename}")
