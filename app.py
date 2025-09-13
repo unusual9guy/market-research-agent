@@ -72,7 +72,7 @@ def main():
         
         # Company input
         st.header("🏢 Company/Industry Analysis")
-        
+         
         # Initialize session state for company name (for example buttons only)
         if 'selected_company' not in st.session_state:
             st.session_state.selected_company = ""
