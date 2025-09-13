@@ -20,7 +20,7 @@ Manual market research for AI/ML use case identification is time-consuming, ofte
 ### User Stories
 
 #### Core User Stories
-1. **As a business analyst**, I want to input a company name and receive a comprehensive market research report so that I can understand AI opportunities in that space.
+1. **As a business analyst**, I want to input a company name or industry and receive a comprehensive market research report so that I can understand AI opportunities in that space.
 
 2. **As an AI consultant**, I want to generate industry-specific AI use cases with supporting resources so that I can propose relevant solutions to clients.
 
@@ -50,11 +50,11 @@ Manual market research for AI/ML use case identification is time-consuming, ofte
    - Reference citation for each use case
    - Clear rationale and business impact
 
-3. **Resource Asset Collector Agent**
-   - Multi-platform resource discovery (Kaggle, HuggingFace, GitHub, Google Dataset Search)
-   - Quality filtering and ranking
+3. **Dataset Discovery Agent**
+   - Targeted dataset discovery (Kaggle, GitHub platforms only)
+   - Quality filtering and relevance scoring
    - Clickable resource links with annotations
-   - Dataset, codebase, and documentation categorization
+   - Auto-save functionality with markdown reports
 
 4. **Orchestration & Reporting System**
    - Multi-format output (Markdown, PDF, HTML)
