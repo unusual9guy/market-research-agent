@@ -18,3 +18,7 @@ streamlit-chat
 pandas
 python-dotenv
 pydantic
+
+# PDF Conversion
+pdfkit
+markdown
