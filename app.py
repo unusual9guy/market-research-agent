@@ -144,6 +144,22 @@ def main():
         # Run analysis
         if company_name.strip():
             run_market_research_analysis(company_name.strip(), show_debug, save_report)
+    
+    # Display stored results if they exist (persists after downloads)
+    if 'analysis_results' in st.session_state and not analyze_button:
+        st.markdown("---")
+        st.markdown('<h2 class="section-header">📊 Analysis Results</h2>', unsafe_allow_html=True)
+        
+        # Display the stored results
+        results = st.session_state.analysis_results
+        display_analysis_results(
+            results['company_name'],
+            results['deep_research'],
+            results['strategic_use_cases'],
+            results['dataset_results'],
+            results['comprehensive_report'],
+            results['save_report']
+        )
 
 def run_market_research_analysis(company_name: str, show_debug: bool, save_report: bool):
     """Run the complete market research analysis."""
@@ -244,6 +260,16 @@ def run_market_research_analysis(company_name: str, show_debug: bool, save_repor
         progress_bar.progress(100)
         status_text.text("✅ Analysis completed successfully!")
         log_container.success("🎉 **ALL SYSTEMS COMPLETE**: 3-agent analysis finished successfully!")
+        
+        # Store results in session state to prevent loss on download
+        st.session_state.analysis_results = {
+            'company_name': company_name,
+            'deep_research': deep_research,
+            'strategic_use_cases': strategic_use_cases,
+            'dataset_results': dataset_results,
+            'comprehensive_report': comprehensive_report,
+            'save_report': save_report
+        }
         
         # Display results
         display_analysis_results(
@@ -427,7 +453,7 @@ def display_analysis_results(
                 file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.md",
                 mime="text/markdown",
                 help="Download the complete report with datasets as a Markdown file",
-                key="download_md"
+                key=f"download_md_{company_name.replace(' ', '_')}"
             )
         
         with col2:
@@ -456,7 +482,7 @@ def display_analysis_results(
                     file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.pdf",
                     mime="application/pdf",
                     help="Download the complete report as a professional PDF document",
-                    key="download_pdf"
+                    key=f"download_pdf_{company_name.replace(' ', '_')}"
                 )
                 
             except Exception as e:
