@@ -9,6 +9,7 @@ from agents.enhanced_industry_agent import EnhancedIndustryResearchAgent
 from agents.enhanced_use_case_agent import EnhancedUseCaseGenerationAgent
 from agents.dataset_discovery_agent import DatasetDiscoveryAgent
 from utils.report_generator import ReportGenerator
+from utils.md_to_pdf import convert_md_to_pdf
 from config import config
 
 # Set up logging
@@ -128,7 +129,7 @@ def main():
         # System capabilities
         st.markdown("### 🔧 System Capabilities")
         capabilities = [
-            "🔍 **Real-time Web Search** - Tavily API for current market data",
+            "🔍 **Real-time Web Search** - Tavily and Exa API for current market data",
             "🤖 **LLM Analysis** - OpenAI GPT-4 for intelligent insights", 
             "📊 **Multi-Agent Architecture** - Specialized agents for different tasks",
             "🏢 **Flexible Input** - Works with both companies and industries",
@@ -268,7 +269,7 @@ def display_analysis_results(
     # Summary metrics
     st.markdown('<h2 class="section-header">📊 Analysis Summary</h2>', unsafe_allow_html=True)
     
-    col1, col2, col3, col4, col5 = st.columns(5)
+    col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         research_sources = deep_research.get('research_sources', {})
@@ -287,9 +288,6 @@ def display_analysis_results(
         high_innovation = sum(1 for uc in use_cases if 'High' in str(uc.get('innovation_level', '')))
         st.metric("💡 High Innovation", f"{high_innovation}/{len(use_cases)}")
     
-    with col5:
-        avg_score = sum(uc.get('overall_score', 0) for uc in use_cases) / len(use_cases) if use_cases else 0
-        st.metric("📈 Avg Quality Score", f"{avg_score:.1%}")
     
     # Tabs for different sections
     tab1, tab2, tab3, tab4, tab5 = st.tabs(["🏭 Industry Analysis", "🎯 AI Use Cases", "📊 Datasets", "📋 Full Report", "💾 Export"])
@@ -344,17 +342,15 @@ def display_analysis_results(
                     st.markdown("**⏱️ Timeline:**")
                     st.write(feasibility.get('implementation_timeline', 'Not specified'))
                 
-                # Scores
-                st.markdown("**📈 Scores:**")
-                score_col1, score_col2, score_col3 = st.columns(3)
+                # Innovation and Complexity
+                st.markdown("**📈 Analysis:**")
+                score_col1, score_col2 = st.columns(2)
                 with score_col1:
                     # Extract just the first word (High, Medium, Low) for display
                     innovation_full = use_case.get('innovation_level', 'Unknown')
                     innovation_display = innovation_full.split()[0] if innovation_full and innovation_full.strip() else 'Unknown'
                     st.metric("Innovation", innovation_display)
                 with score_col2:
-                    st.metric("Overall Score", f"{use_case.get('overall_score', 0):.1%}")
-                with score_col3:
                     complexity = use_case.get('complexity_analysis', {})
                     st.metric("Complexity", complexity.get('technical_complexity', 'Medium'))
     
@@ -421,13 +417,51 @@ def display_analysis_results(
             comprehensive_report, dataset_results
         )
         
-        st.download_button(
-            label="📥 Download Complete Report",
-            data=enhanced_report,
-            file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.md",
-            mime="text/markdown",
-            help="Download the complete report with datasets as a Markdown file"
-        )
+        # Create two columns for download buttons
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.download_button(
+                label="📥 Download Markdown Report",
+                data=enhanced_report,
+                file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.md",
+                mime="text/markdown",
+                help="Download the complete report with datasets as a Markdown file",
+                key="download_md"
+            )
+        
+        with col2:
+            # PDF Download button
+            try:
+                # Create temporary markdown file for PDF conversion
+                temp_md_file = f"temp_{company_name.lower().replace(' ', '_')}_report.md"
+                with open(temp_md_file, 'w', encoding='utf-8') as f:
+                    f.write(enhanced_report)
+                
+                # Convert to PDF
+                pdf_path = convert_md_to_pdf(temp_md_file)
+                
+                # Read PDF file for download
+                with open(pdf_path, 'rb') as f:
+                    pdf_data = f.read()
+                
+                # Clean up temporary files
+                import os
+                os.remove(temp_md_file)
+                os.remove(pdf_path)
+                
+                st.download_button(
+                    label="📄 Download PDF Report",
+                    data=pdf_data,
+                    file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.pdf",
+                    mime="application/pdf",
+                    help="Download the complete report as a professional PDF document",
+                    key="download_pdf"
+                )
+                
+            except Exception as e:
+                st.error(f"❌ PDF conversion failed: {str(e)}")
+                st.info("💡 Make sure wkhtmltopdf is installed. See requirements for setup instructions.")
         
         # Implementation roadmap
         roadmap = strategic_use_cases.get('implementation_roadmap', {})
