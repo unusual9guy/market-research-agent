@@ -82,6 +82,28 @@ st.markdown("""
     justify-content: center !important;
     height: 100% !important;
 }
+
+/* Sidebar styling improvements */
+.css-1d391kg {
+    padding-top: 1rem;
+}
+
+/* Sidebar section headers */
+.sidebar .stMarkdown h3 {
+    color: #1f77b4 !important;
+    margin-bottom: 0.3rem !important;
+    margin-top: 0.5rem !important;
+}
+
+/* Reduce spacing in sidebar */
+.sidebar .stMarkdown {
+    margin-bottom: 0.2rem !important;
+}
+
+/* Reduce alert spacing */
+.sidebar .stAlert {
+    margin-bottom: 0.5rem !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -98,43 +120,51 @@ def main():
     
     # Sidebar configuration
     with st.sidebar:
-        st.header("⚙️ Configuration")
+        st.markdown("### ⚙️ Configuration")
         
         # API Key validation
         missing_keys = config.validate_required_keys()
         if missing_keys:
             st.error(f"❌ Missing API keys: {', '.join(missing_keys)}")
-            st.info("Please configure your API keys in the .env file")
+            st.info("💡 Please configure your API keys in the .env file")
             st.stop()
         else:
             st.success("✅ API keys configured")
         
-        # Company input
-        st.header("🏢 Company/Industry Analysis")
+        st.markdown("### 🏢 Analysis Input")
          
         # Initialize session state for company name (for example buttons only)
         if 'selected_company' not in st.session_state:
             st.session_state.selected_company = ""
         
         company_name = st.text_input(
-            "Enter Company Name or Industry:",
+            "**Company or Industry:**",
             value=st.session_state.selected_company,
-            placeholder="e.g., Tesla, Automotive Industry, Netflix, Streaming Industry",
+            placeholder="e.g., Tesla, Automotive Industry, Netflix",
             help="Enter the name of any company or industry for AI market research analysis"
         )
         
-        # Advanced options
-        with st.expander("🔧 Advanced Options"):
-            show_debug = st.checkbox("Show debug information", value=False)
-            save_report = st.checkbox("Save Report to File", value=True, help="Automatically save report to outputs folder")
         
         # Analysis button
+        st.markdown("### 🚀 Start Analysis")
         analyze_button = st.button(
-            "🚀 Generate Analysis",
+            "Generate Analysis",
             type="primary",
             disabled=not company_name.strip(),
-            help="Click to start comprehensive market research analysis"
+            help="Click to start comprehensive market research analysis",
+            use_container_width=True
         )
+        
+        # Quick info
+        st.markdown("### 📊 System Info")
+        st.info("""
+        **3-Agent System:**
+        - Industry Research Agent
+        - Use Case Generation Agent  
+        - Dataset Discovery Agent
+        
+        **Processing Time:** ~5 minutes
+        """)
     
     # Main content area
     if not analyze_button:
@@ -208,7 +238,7 @@ def main():
     else:
         # Run analysis
         if company_name.strip():
-            run_market_research_analysis(company_name.strip(), show_debug, save_report)
+            run_market_research_analysis(company_name.strip())
     
     # Display stored results if they exist (persists after downloads)
     if 'analysis_results' in st.session_state and not analyze_button:
@@ -222,11 +252,10 @@ def main():
             results['deep_research'],
             results['strategic_use_cases'],
             results['dataset_results'],
-            results['comprehensive_report'],
-            results['save_report']
+            results['comprehensive_report']
         )
 
-def run_market_research_analysis(company_name: str, show_debug: bool, save_report: bool):
+def run_market_research_analysis(company_name: str):
     """Run the complete market research analysis."""
     
     # Initialize progress tracking
@@ -247,8 +276,6 @@ def run_market_research_analysis(company_name: str, show_debug: bool, save_repor
         report_generator = ReportGenerator()
         
         log_container.success("✅ **All 3 AI agents initialized successfully**")
-        if show_debug:
-            st.success("✅ Agents initialized successfully")
         
         # Phase 1: Industry Research
         status_text.text("📊 Conducting deep industry research...")
@@ -269,9 +296,6 @@ def run_market_research_analysis(company_name: str, show_debug: bool, save_repor
         total_sources = sum(len(sources) for sources in research_sources.values())
         log_container.success(f"✅ **Agent 1 completed**: Found {total_sources} research sources for {company_name}")
         
-        if show_debug:
-            st.info(f"✅ Industry research completed with {total_sources} sources")
-        
         # Phase 2: Use Case Generation
         status_text.text("🎯 Generating strategic AI use cases...")
         progress_bar.progress(60)
@@ -289,9 +313,6 @@ def run_market_research_analysis(company_name: str, show_debug: bool, save_repor
         progress_bar.progress(80)
         use_cases = strategic_use_cases.get('strategic_use_cases', [])
         log_container.success(f"✅ **Agent 2 completed**: Generated {len(use_cases)} strategic AI use cases")
-        
-        if show_debug:
-            st.info(f"✅ Generated {len(use_cases)} strategic use cases")
         
         # Phase 3: Dataset Discovery
         status_text.text("📊 Discovering relevant datasets...")
@@ -311,9 +332,6 @@ def run_market_research_analysis(company_name: str, show_debug: bool, save_repor
         total_datasets = dataset_results.get('total_datasets_found', 0)
         log_container.success(f"✅ **Agent 3 completed**: Discovered {total_datasets} relevant datasets from Kaggle and GitHub")
         
-        if show_debug:
-            st.info(f"✅ Discovered {total_datasets} relevant datasets")
-        
         # Phase 4: Report Generation
         status_text.text("📋 Generating comprehensive report...")
         log_container.info("📋 **Report Generator**: Compiling comprehensive analysis report...")
@@ -332,28 +350,24 @@ def run_market_research_analysis(company_name: str, show_debug: bool, save_repor
             'deep_research': deep_research,
             'strategic_use_cases': strategic_use_cases,
             'dataset_results': dataset_results,
-            'comprehensive_report': comprehensive_report,
-            'save_report': save_report
+            'comprehensive_report': comprehensive_report
         }
         
         # Display results
         display_analysis_results(
             company_name, deep_research, strategic_use_cases, 
-            dataset_results, comprehensive_report, save_report
+            dataset_results, comprehensive_report
         )
         
     except Exception as e:
         st.error(f"❌ Analysis failed: {str(e)}")
-        if show_debug:
-            st.exception(e)
 
 def display_analysis_results(
     company_name: str, 
     deep_research: Dict, 
     strategic_use_cases: Dict, 
     dataset_results: Dict,
-    comprehensive_report: str, 
-    save_report: bool
+    comprehensive_report: str
 ):
     """Display the analysis results in a structured format."""
     
@@ -488,20 +502,19 @@ def display_analysis_results(
         st.markdown("### 💾 Export Options")
         
         # Save report
-        if save_report:
-            import os
-            # Ensure outputs directory exists
-            os.makedirs('outputs', exist_ok=True)
-            
-            # Generate enhanced report with datasets
-            enhanced_report = generate_enhanced_report_with_datasets(
-                comprehensive_report, dataset_results
-            )
-            
-            filename = f"outputs/{company_name.lower().replace(' ', '_')}_ai_market_research_report.md"
-            with open(filename, 'w', encoding='utf-8') as f:
-                f.write(enhanced_report)
-            st.success(f"✅ Report saved as: {filename}")
+        import os
+        # Ensure outputs directory exists
+        os.makedirs('outputs', exist_ok=True)
+        
+        # Generate enhanced report with datasets
+        enhanced_report = generate_enhanced_report_with_datasets(
+            comprehensive_report, dataset_results
+        )
+        
+        filename = f"outputs/{company_name.lower().replace(' ', '_')}_ai_market_research_report.md"
+        with open(filename, 'w', encoding='utf-8') as f:
+            f.write(enhanced_report)
+        st.success(f"✅ Report saved as: {filename}")
         
         # Download button
         enhanced_report = generate_enhanced_report_with_datasets(
