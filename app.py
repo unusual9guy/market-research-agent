@@ -59,12 +59,28 @@ st.markdown("""
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
+/* Reduce padding for all alert boxes */
 .stAlert > div {
-    min-height: 120px !important;
+    padding: 8px 12px !important;
+}
+
+/* Target the first three info boxes specifically */
+.stAlert:nth-of-type(1),
+.stAlert:nth-of-type(2),
+.stAlert:nth-of-type(3) {
+    min-height: 80px !important;
+    margin-top: 5px !important;
+}
+
+/* Center text in the first three info boxes */
+.stAlert:nth-of-type(1) > div,
+.stAlert:nth-of-type(2) > div,
+.stAlert:nth-of-type(3) > div {
+    text-align: center !important;
     display: flex !important;
     align-items: center !important;
     justify-content: center !important;
-    text-align: center !important;
+    height: 100% !important;
 }
 </style>
 """, unsafe_allow_html=True)
