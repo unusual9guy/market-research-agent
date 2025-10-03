@@ -59,6 +59,13 @@ st.markdown("""
     transform: translateY(-2px);
     box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
+.stAlert > div {
+    min-height: 120px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    text-align: center !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -124,11 +131,11 @@ def main():
             
         with col2:
             st.markdown("### 🎯 AI Use Cases")
-            st.info("Strategic AI opportunities with feasibility analysis")
+            st.info("Strategic AI opportunities that can be implemented")
             
         with col3:
             st.markdown("### 📊 Dataset Discovery")
-            st.info("Curated datasets from Kaggle and GitHub")
+            st.info("Rich dataset sourcing from Kaggle and GitHub for each use case")
         
         # Example companies and industries
         st.markdown("### 💡 Example Companies & Industries to Analyze:")
