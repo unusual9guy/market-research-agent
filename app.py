@@ -271,19 +271,24 @@ def main():
             st.info("Please configure your API keys in the .env file")
             st.stop()
         else:
-            st.success("API keys configured")
+            st.success("✅API keys configured")
         
         
-        # Quick info
-        st.markdown("### System Info")
-        st.markdown("""
-        **3-Agent System:**
-        - Industry Research Agent
-        - Use Case Generation Agent  
-        - Dataset Discovery Agent
         
-        **Processing Time:** ~5 minutes
-        """)
+        
+        # Quick stats
+        if 'analysis_results' in st.session_state:
+            st.markdown("### Last Analysis")
+            results = st.session_state.analysis_results
+            use_cases = results.get('strategic_use_cases', {}).get('strategic_use_cases', [])
+            datasets = results.get('dataset_results', {}).get('total_datasets_found', 0)
+            
+            st.metric("Use Cases", len(use_cases))
+            st.metric("Datasets Found", datasets)
+            
+            if st.button("Clear Results", type="secondary", use_container_width=True):
+                del st.session_state.analysis_results
+                st.rerun()
     
     # Initialize session state for company name (for example buttons only)
     if 'selected_company' not in st.session_state:
@@ -378,7 +383,8 @@ def main():
             "**Multi-Agent Architecture** - Specialized agents for different tasks",
             "**Flexible Input** - Works with both companies and industries",
             "**Professional Reports** - Executive-ready analysis and recommendations",
-            "**Fast Processing** - Complete analysis in under 5 minutes"
+            "**Fast Processing** - Complete analysis in under 5 minutes",
+            "**Processing Time: ~5 minutes**"
         ]
         
         for capability in capabilities:
