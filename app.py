@@ -267,28 +267,6 @@ def main():
         else:
             st.success("API keys configured")
         
-        st.markdown("### Analysis Input")
-         
-        # Initialize session state for company name (for example buttons only)
-        if 'selected_company' not in st.session_state:
-            st.session_state.selected_company = ""
-        
-        company_name = st.text_input(
-            "**Company or Industry:**",
-            value=st.session_state.selected_company,
-            placeholder="e.g., Tesla, Automotive Industry",
-            help="Enter the name of any company or industry you want to analyze"
-        )
-        
-        
-        # Analysis button
-        analyze_button = st.button(
-            "Generate Analysis",
-            type="primary",
-            disabled=not company_name.strip(),
-            help="Click to start comprehensive market research analysis",
-            use_container_width=True
-        )
         
         # Quick info
         st.markdown("### System Info")
@@ -301,8 +279,13 @@ def main():
         **Processing Time:** ~5 minutes
         """)
     
+    # Initialize session state for company name (for example buttons only)
+    if 'selected_company' not in st.session_state:
+        st.session_state.selected_company = ""
+    
     # Main content area
-    if not analyze_button:
+    # Show welcome screen or run analysis
+    if 'analysis_results' not in st.session_state:
         # Welcome screen
         col1, col2, col3 = st.columns(3)
         
@@ -356,6 +339,29 @@ def main():
                     st.session_state.selected_company = example
                     st.rerun()
         
+        # Search and Analysis Section
+        st.markdown("### Analysis Input")
+        
+        company_name = st.text_input(
+            "**Company or Industry:**",
+            value=st.session_state.selected_company,
+            placeholder="e.g., Tesla, Automotive Industry",
+            help="Enter the name of any company or industry you want to analyze"
+        )
+        
+        # Analysis button
+        analyze_button = st.button(
+            "Generate Analysis",
+            type="primary",
+            disabled=not company_name.strip(),
+            help="Click to start comprehensive market research analysis",
+            use_container_width=True
+        )
+        
+        # Run analysis if button clicked
+        if analyze_button and company_name.strip():
+            run_market_research_analysis(company_name.strip())
+        
         # System capabilities
         st.markdown("### System Capabilities")
         capabilities = [
@@ -370,13 +376,8 @@ def main():
         for capability in capabilities:
             st.markdown(capability)
     
-    else:
-        # Run analysis
-        if company_name.strip():
-            run_market_research_analysis(company_name.strip())
-    
     # Display stored results if they exist (persists after downloads)
-    if 'analysis_results' in st.session_state and not analyze_button:
+    if 'analysis_results' in st.session_state:
         st.markdown("---")
         st.markdown('<h2 class="section-header">Analysis Results</h2>', unsafe_allow_html=True)
         
