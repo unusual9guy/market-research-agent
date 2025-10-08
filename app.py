@@ -232,13 +232,19 @@ st.markdown("""
 }
 
 /* Override any left alignment in main content */
-.block-container * {ec
+.block-container * {
     text-align: center !important;
 }
 
 /* Exception for sidebar - keep left aligned */
 .sidebar * {
     text-align: left !important;
+}
+
+/* Center the Generate Analysis button specifically */
+.block-container .stButton {
+    display: flex !important;
+    justify-content: center !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -349,13 +355,16 @@ def main():
             help="Enter the name of any company or industry you want to analyze"
         )
         
-        # Analysis button
-        analyze_button = st.button(
-            "Generate Analysis",
-            type="primary",
-            disabled=not company_name.strip(),
-            help="Click to start comprehensive market research analysis"
-        )
+        # Analysis button - centered using columns
+        col1, col2, col3 = st.columns([1, 2, 1])
+        with col2:
+            analyze_button = st.button(
+                "Generate Analysis",
+                type="primary",
+                disabled=not company_name.strip(),
+                help="Click to start comprehensive market research analysis",
+                use_container_width=True
+            )
         
         # Run analysis if button clicked
         if analyze_button and company_name.strip():
