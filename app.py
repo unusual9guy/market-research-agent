@@ -401,26 +401,36 @@ def main():
         # Search and Analysis Section
         st.markdown("### Analysis Input")
         
+        # Check if analysis is running
+        analysis_running = 'analysis_in_progress' in st.session_state and st.session_state.analysis_in_progress
+        
         company_name = st.text_input(
             "**Company or Industry:**",
             value=st.session_state.selected_company,
             placeholder="e.g., Tesla, Automotive Industry",
-            help="Enter the name of any company or industry you want to analyze"
+            help="Enter the name of any company or industry you want to analyze",
+            disabled=analysis_running
         )
         
         # Analysis button - centered using columns
         col1, col2, col3 = st.columns([1, 2, 1])
         with col2:
             analyze_button = st.button(
-                "Generate Analysis",
+                "Generate Analysis" if not analysis_running else "Analysis in Progress...",
                 type="primary",
-                disabled=not company_name.strip(),
-                help="Click to start comprehensive market research analysis",
+                disabled=not company_name.strip() or analysis_running,
+                help="Click to start comprehensive market research analysis" if not analysis_running else "Analysis is currently running",
                 use_container_width=True
             )
         
         # Run analysis if button clicked
         if analyze_button and company_name.strip():
+            # Set analysis in progress immediately and rerun to update UI
+            st.session_state.analysis_in_progress = True
+            st.rerun()
+        
+        # Actually run analysis if flag is set
+        if 'analysis_in_progress' in st.session_state and st.session_state.analysis_in_progress:
             run_market_research_analysis(company_name.strip())
         
         # System capabilities
@@ -461,6 +471,9 @@ def main():
 
 def run_market_research_analysis(company_name: str):
     """Run the complete market research analysis."""
+    
+    # Set analysis in progress
+    st.session_state.analysis_in_progress = True
     
     # Initialize progress tracking
     progress_bar = st.progress(0)
@@ -563,8 +576,13 @@ def run_market_research_analysis(company_name: str):
             dataset_results, comprehensive_report
         )
         
+        # Clear analysis in progress flag
+        st.session_state.analysis_in_progress = False
+        
     except Exception as e:
         st.error(f"Analysis failed: {str(e)}")
+        # Clear analysis in progress flag on error
+        st.session_state.analysis_in_progress = False
 
 def display_analysis_results(
     company_name: str, 
