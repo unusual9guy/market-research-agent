@@ -104,6 +104,142 @@ st.markdown("""
 .sidebar .stAlert {
     margin-bottom: 0.5rem !important;
 }
+
+/* Center all text elements in main content area */
+.block-container .stMarkdown,
+.block-container .stMarkdown h1, 
+.block-container .stMarkdown h2, 
+.block-container .stMarkdown h3,
+.block-container .stMarkdown p,
+.block-container .stMarkdown div {
+    text-align: center !important;
+}
+
+/* Center columns and their content */
+.block-container .stColumn {
+    text-align: center !important;
+}
+
+.block-container .stColumn .stMarkdown {
+    text-align: center !important;
+}
+
+/* Center alert boxes */
+.block-container .stAlert {
+    text-align: center !important;
+}
+
+.block-container .stAlert > div {
+    text-align: center !important;
+}
+
+/* Center buttons */
+.block-container .stButton {
+    text-align: center !important;
+}
+
+.block-container .stButton > button {
+    text-align: center !important;
+}
+
+/* Center metrics */
+.block-container .stMetric {
+    text-align: center !important;
+}
+
+/* Center tabs */
+.block-container .stTabs [data-baseweb="tab-list"] {
+    justify-content: center !important;
+}
+
+.block-container .stTabs [data-baseweb="tab-list"] button {
+    text-align: center !important;
+}
+
+/* Center tab content */
+.block-container .stTabs [data-baseweb="tab-panel"] {
+    text-align: center !important;
+}
+
+/* Center download buttons */
+.block-container .stDownloadButton {
+    text-align: center !important;
+}
+
+/* Center expander headers and content */
+.block-container .streamlit-expanderHeader {
+    text-align: center !important;
+}
+
+.block-container .streamlit-expanderContent {
+    text-align: center !important;
+}
+
+/* Center progress bars */
+.block-container .stProgress {
+    text-align: center !important;
+}
+
+/* Center status text */
+.block-container .stText {
+    text-align: center !important;
+}
+
+/* Center spinner */
+.block-container .stSpinner {
+    text-align: center !important;
+}
+
+/* Center text inputs */
+.block-container .stTextInput {
+    text-align: center !important;
+}
+
+.block-container .stTextInput > div > div > input {
+    text-align: center !important;
+}
+
+/* Center select boxes */
+.block-container .stSelectbox {
+    text-align: center !important;
+}
+
+/* Center checkboxes */
+.block-container .stCheckbox {
+    text-align: center !important;
+}
+
+.block-container .stCheckbox > label {
+    text-align: center !important;
+}
+
+/* Center file uploader */
+.block-container .stFileUploader {
+    text-align: center !important;
+}
+
+/* Center success/error messages */
+.block-container .stSuccess, 
+.block-container .stError, 
+.block-container .stWarning, 
+.block-container .stInfo {
+    text-align: center !important;
+}
+
+/* Ensure all divs in main are centered */
+.block-container div {
+    text-align: center !important;
+}
+
+/* Override any left alignment in main content */
+.block-container * {
+    text-align: center !important;
+}
+
+/* Exception for sidebar - keep left aligned */
+.sidebar * {
+    text-align: left !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
