@@ -232,7 +232,7 @@ st.markdown("""
 }
 
 /* Override any left alignment in main content */
-.block-container * {
+.block-container * {ec
     text-align: center !important;
 }
 
@@ -354,8 +354,7 @@ def main():
             "Generate Analysis",
             type="primary",
             disabled=not company_name.strip(),
-            help="Click to start comprehensive market research analysis",
-            use_container_width=True
+            help="Click to start comprehensive market research analysis"
         )
         
         # Run analysis if button clicked
