@@ -18,7 +18,7 @@ logging.basicConfig(level=logging.WARNING)  # Reduce log noise in demo
 # Page configuration
 st.set_page_config(
     page_title="AI Market Research Agent",
-    page_icon="🤖",
+    page_icon="📊",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -111,7 +111,7 @@ def main():
     """Main Streamlit application."""
     
     # Header
-    st.markdown('<h1 class="main-header">🤖 AI-Powered Market Research Agent</h1>', unsafe_allow_html=True)
+    st.markdown('<h1 class="main-header">AI-Powered Market Research Agent</h1>', unsafe_allow_html=True)
     st.markdown("### Multi-Agent System for Automated Market Research & AI Use Case Generation")
     
     # Agent progress log container (will be populated during analysis)
@@ -120,18 +120,18 @@ def main():
     
     # Sidebar configuration
     with st.sidebar:
-        st.markdown("### ⚙️ Configuration")
+        st.markdown("### Configuration")
         
         # API Key validation
         missing_keys = config.validate_required_keys()
         if missing_keys:
-            st.error(f"❌ Missing API keys: {', '.join(missing_keys)}")
-            st.info("💡 Please configure your API keys in the .env file")
+            st.error(f"Missing API keys: {', '.join(missing_keys)}")
+            st.info("Please configure your API keys in the .env file")
             st.stop()
         else:
-            st.success("✅ API keys configured")
+            st.success("API keys configured")
         
-        st.markdown("### 🏢 Analysis Input")
+        st.markdown("### Analysis Input")
          
         # Initialize session state for company name (for example buttons only)
         if 'selected_company' not in st.session_state:
@@ -140,8 +140,8 @@ def main():
         company_name = st.text_input(
             "**Company or Industry:**",
             value=st.session_state.selected_company,
-            placeholder="e.g., Tesla, Automotive Industry, Netflix",
-            help="Enter the name of any company or industry for AI market research analysis"
+            placeholder="e.g., Tesla, Automotive Industry",
+            help="Enter the name of any company or industry you want to analyze"
         )
         
         
@@ -155,7 +155,7 @@ def main():
         )
         
         # Quick info
-        st.markdown("### 📊 System Info")
+        st.markdown("### System Info")
         st.markdown("""
         **3-Agent System:**
         - Industry Research Agent
@@ -171,19 +171,19 @@ def main():
         col1, col2, col3 = st.columns(3)
         
         with col1:
-            st.markdown("### 📊 Industry Research")
+            st.markdown("### Industry Research")
             st.info("Deep market analysis with competitive intelligence")
             
         with col2:
-            st.markdown("### 🎯 AI Use Cases")
+            st.markdown("### AI Use Cases")
             st.info("Strategic AI opportunities that can be implemented")
             
         with col3:
-            st.markdown("### 📊 Dataset Discovery")
+            st.markdown("### Dataset Discovery")
             st.info("Rich dataset sourcing from Kaggle and GitHub for each use case")
         
         # Example companies and industries
-        st.markdown("### 💡 Example Companies & Industries to Analyze:")
+        st.markdown("### Example Companies & Industries to Analyze:")
         example_cols = st.columns(4)
         examples = ["Tesla", "Automotive Industry", "Netflix", "Streaming Industry"]
         
@@ -212,7 +212,7 @@ def main():
                 st.markdown(button_html, unsafe_allow_html=True)
                 
                 if st.button(
-                    f"📊 {example}", 
+                    f"{example}", 
                     key=f"example_{example}",
                     use_container_width=True,
                     type="secondary"
@@ -221,14 +221,14 @@ def main():
                     st.rerun()
         
         # System capabilities
-        st.markdown("### 🔧 System Capabilities")
+        st.markdown("### System Capabilities")
         capabilities = [
-            "🔍 **Real-time Web Search** - Tavily and Exa API for current market data",
-            "🤖 **LLM Analysis** - OpenAI GPT-4 for intelligent insights", 
-            "📊 **Multi-Agent Architecture** - Specialized agents for different tasks",
-            "🏢 **Flexible Input** - Works with both companies and industries",
-            "📋 **Professional Reports** - Executive-ready analysis and recommendations",
-            "⚡ **Fast Processing** - Complete analysis in under 5 minutes"
+            "**Real-time Web Search** - Tavily and Exa API for current market data",
+            "**LLM Analysis** - OpenAI GPT-4 for intelligent insights", 
+            "**Multi-Agent Architecture** - Specialized agents for different tasks",
+            "**Flexible Input** - Works with both companies and industries",
+            "**Professional Reports** - Executive-ready analysis and recommendations",
+            "**Fast Processing** - Complete analysis in under 5 minutes"
         ]
         
         for capability in capabilities:
@@ -242,7 +242,7 @@ def main():
     # Display stored results if they exist (persists after downloads)
     if 'analysis_results' in st.session_state and not analyze_button:
         st.markdown("---")
-        st.markdown('<h2 class="section-header">📊 Analysis Results</h2>', unsafe_allow_html=True)
+        st.markdown('<h2 class="section-header">Analysis Results</h2>', unsafe_allow_html=True)
         
         # Display the stored results
         results = st.session_state.analysis_results
@@ -265,83 +265,83 @@ def run_market_research_analysis(company_name: str):
     
     try:
         # Initialize agents
-        status_text.text("🔧 Initializing AI agents...")
+        status_text.text("Initializing AI agents...")
         progress_bar.progress(10)
-        log_container.info("🚀 **Starting Multi-Agent Market Research System**")
+        log_container.info("**Starting Multi-Agent Market Research System**")
         
         industry_agent = EnhancedIndustryResearchAgent()
         use_case_agent = EnhancedUseCaseGenerationAgent()
         dataset_agent = DatasetDiscoveryAgent()
         report_generator = ReportGenerator()
         
-        log_container.success("✅ **All 3 AI agents initialized successfully**")
+        log_container.success("**All 3 AI agents initialized successfully**")
         
         # Phase 1: Industry Research
-        status_text.text("📊 Conducting deep industry research...")
+        status_text.text("Conducting deep industry research...")
         progress_bar.progress(20)
-        log_container.info(f"🤖 **Agent 1 (Industry Research)**: Starting deep analysis for **{company_name}**...")
+        log_container.info(f"**Agent 1 (Industry Research)**: Starting deep analysis for **{company_name}**...")
         
         with st.spinner("Analyzing industry landscape and competitive positioning..."):
-            log_container.info("🔍 **Agent 1**: Gathering company information, market trends, and competitor analysis...")
+            log_container.info("**Agent 1**: Gathering company information, market trends, and competitor analysis...")
             deep_research = industry_agent.conduct_deep_research(company_name)
         
         if deep_research.get('status') != 'completed':
-            log_container.error(f"❌ **Agent 1 failed**: {deep_research.get('error', 'Unknown error')}")
-            st.error(f"❌ Industry research failed: {deep_research.get('error', 'Unknown error')}")
+            log_container.error(f"**Agent 1 failed**: {deep_research.get('error', 'Unknown error')}")
+            st.error(f"Industry research failed: {deep_research.get('error', 'Unknown error')}")
             return
         
         progress_bar.progress(40)
         research_sources = deep_research.get('research_sources', {})
         total_sources = sum(len(sources) for sources in research_sources.values())
-        log_container.success(f"✅ **Agent 1 completed**: Found {total_sources} research sources for {company_name}")
+        log_container.success(f"**Agent 1 completed**: Found {total_sources} research sources for {company_name}")
         
         # Phase 2: Use Case Generation
-        status_text.text("🎯 Generating strategic AI use cases...")
+        status_text.text("Generating strategic AI use cases...")
         progress_bar.progress(60)
-        log_container.info("🤖 **Agent 2 (Use Case Generation)**: Initializing and analyzing AI opportunities...")
+        log_container.info("**Agent 2 (Use Case Generation)**: Initializing and analyzing AI opportunities...")
         
         with st.spinner("Identifying AI opportunities and analyzing feasibility..."):
-            log_container.info("🎯 **Agent 2**: Analyzing market trends and generating strategic AI use cases...")
+            log_container.info("**Agent 2**: Analyzing market trends and generating strategic AI use cases...")
             strategic_use_cases = use_case_agent.generate_strategic_use_cases(deep_research)
         
         if strategic_use_cases.get('status') != 'completed':
-            log_container.error(f"❌ **Agent 2 failed**: {strategic_use_cases.get('error', 'Unknown error')}")
-            st.error(f"❌ Use case generation failed: {strategic_use_cases.get('error', 'Unknown error')}")
+            log_container.error(f"**Agent 2 failed**: {strategic_use_cases.get('error', 'Unknown error')}")
+            st.error(f"Use case generation failed: {strategic_use_cases.get('error', 'Unknown error')}")
             return
         
         progress_bar.progress(80)
         use_cases = strategic_use_cases.get('strategic_use_cases', [])
-        log_container.success(f"✅ **Agent 2 completed**: Generated {len(use_cases)} strategic AI use cases")
+        log_container.success(f"**Agent 2 completed**: Generated {len(use_cases)} strategic AI use cases")
         
         # Phase 3: Dataset Discovery
-        status_text.text("📊 Discovering relevant datasets...")
+        status_text.text("Discovering relevant datasets...")
         progress_bar.progress(90)
-        log_container.info("🤖 **Agent 3 (Dataset Discovery)**: Starting dataset search for generated use cases...")
+        log_container.info("**Agent 3 (Dataset Discovery)**: Starting dataset search for generated use cases...")
         
         with st.spinner("Finding datasets on Kaggle and GitHub..."):
-            log_container.info("📊 **Agent 3**: Searching Kaggle and GitHub for relevant datasets...")
+            log_container.info("**Agent 3**: Searching Kaggle and GitHub for relevant datasets...")
             dataset_results = dataset_agent.discover_datasets(use_cases)
         
         if dataset_results.get('status') != 'completed':
-            log_container.error(f"❌ **Agent 3 failed**: {dataset_results.get('error', 'Unknown error')}")
-            st.error(f"❌ Dataset discovery failed: {dataset_results.get('error', 'Unknown error')}")
+            log_container.error(f"**Agent 3 failed**: {dataset_results.get('error', 'Unknown error')}")
+            st.error(f"Dataset discovery failed: {dataset_results.get('error', 'Unknown error')}")
             return
         
         progress_bar.progress(95)
         total_datasets = dataset_results.get('total_datasets_found', 0)
-        log_container.success(f"✅ **Agent 3 completed**: Discovered {total_datasets} relevant datasets from Kaggle and GitHub")
+        log_container.success(f"**Agent 3 completed**: Discovered {total_datasets} relevant datasets from Kaggle and GitHub")
         
         # Phase 4: Report Generation
-        status_text.text("📋 Generating comprehensive report...")
-        log_container.info("📋 **Report Generator**: Compiling comprehensive analysis report...")
+        status_text.text("Generating comprehensive report...")
+        log_container.info("**Report Generator**: Compiling comprehensive analysis report...")
         
         comprehensive_report = report_generator.generate_comprehensive_report(
             deep_research, strategic_use_cases
         )
         
         progress_bar.progress(100)
-        status_text.text("✅ Analysis completed successfully!")
-        log_container.success("🎉 **ALL SYSTEMS COMPLETE**: 3-agent analysis finished successfully!")
+        status_text.text("Analysis completed successfully!")
+        log_container.success("**ALL SYSTEMS COMPLETE**: 3-agent analysis finished successfully!")
         
         # Store results in session state to prevent loss on download
         st.session_state.analysis_results = {
@@ -359,7 +359,7 @@ def run_market_research_analysis(company_name: str):
         )
         
     except Exception as e:
-        st.error(f"❌ Analysis failed: {str(e)}")
+        st.error(f"Analysis failed: {str(e)}")
 
 def display_analysis_results(
     company_name: str, 
@@ -371,33 +371,33 @@ def display_analysis_results(
     """Display the analysis results in a structured format."""
     
     # Summary metrics
-    st.markdown('<h2 class="section-header">📊 Analysis Summary</h2>', unsafe_allow_html=True)
+    st.markdown('<h2 class="section-header">Analysis Summary</h2>', unsafe_allow_html=True)
     
     col1, col2, col3, col4 = st.columns(4)
     
     with col1:
         research_sources = deep_research.get('research_sources', {})
         total_sources = sum(len(sources) for sources in research_sources.values())
-        st.metric("📚 Research Sources", total_sources)
+        st.metric("Research Sources", total_sources)
     
     with col2:
         use_cases = strategic_use_cases.get('strategic_use_cases', [])
-        st.metric("🎯 AI Use Cases", len(use_cases))
+        st.metric("AI Use Cases", len(use_cases))
     
     with col3:
         total_datasets = dataset_results.get('total_datasets_found', 0)
-        st.metric("📊 Datasets Found", total_datasets)
+        st.metric("Datasets Found", total_datasets)
     
     with col4:
         high_innovation = sum(1 for uc in use_cases if 'High' in str(uc.get('innovation_level', '')))
-        st.metric("💡 High Innovation", f"{high_innovation}/{len(use_cases)}")
+        st.metric("High Innovation", f"{high_innovation}/{len(use_cases)}")
     
     
     # Tabs for different sections
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["🏭 Industry Analysis", "🎯 AI Use Cases", "📊 Datasets", "📋 Full Report", "💾 Export"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Industry Analysis", "AI Use Cases", "Datasets", "Full Report", "Export"])
     
     with tab1:
-        st.markdown("### 🔍 Industry Research Summary")
+        st.markdown("### Industry Research Summary")
         
         # Company foundation
         company_analysis = deep_research.get('company_foundation', {})
@@ -418,7 +418,7 @@ def display_analysis_results(
                     st.markdown(f"- [{source.get('title', 'Source')[:80]}]({source.get('url', '#')})")
     
     with tab2:
-        st.markdown("### 🎯 Strategic AI Use Cases")
+        st.markdown("### Strategic AI Use Cases")
         
         for i, use_case in enumerate(use_cases, 1):
             with st.expander(f"**{i}. {use_case.get('title', f'Use Case {i}')}** (Priority: {use_case.get('priority_rank', i)})"):
@@ -426,28 +426,28 @@ def display_analysis_results(
                 col1, col2 = st.columns(2)
                 
                 with col1:
-                    st.markdown("**🎯 Strategic Value:**")
+                    st.markdown("**Strategic Value:**")
                     st.write(use_case.get('strategic_value', 'Not specified'))
                     
-                    st.markdown("**💰 Revenue Impact:**")
+                    st.markdown("**Revenue Impact:**")
                     st.write(use_case.get('revenue_impact', 'Not specified'))
                     
-                    st.markdown("**⚙️ Implementation:**")
+                    st.markdown("**Implementation:**")
                     st.write(use_case.get('implementation_approach', 'Not specified'))
                 
                 with col2:
-                    st.markdown("**🤖 AI Solution:**")
+                    st.markdown("**AI Solution:**")
                     st.write(use_case.get('ai_solution', 'Not specified'))
                     
-                    st.markdown("**📊 Success Metrics:**")
+                    st.markdown("**Success Metrics:**")
                     st.write(use_case.get('success_metrics', 'Not specified'))
                     
                     feasibility = use_case.get('feasibility_analysis', {})
-                    st.markdown("**⏱️ Timeline:**")
+                    st.markdown("**Timeline:**")
                     st.write(feasibility.get('implementation_timeline', 'Not specified'))
                 
                 # Innovation and Complexity
-                st.markdown("**📈 Analysis:**")
+                st.markdown("**Analysis:**")
                 score_col1, score_col2 = st.columns(2)
                 with score_col1:
                     # Extract just the first word (High, Medium, Low) for display
@@ -459,7 +459,7 @@ def display_analysis_results(
                     st.metric("Complexity", complexity.get('technical_complexity', 'Medium'))
     
     with tab3:
-        st.markdown("### 📊 Dataset Discovery Results")
+        st.markdown("### Dataset Discovery Results")
         
         total_datasets = dataset_results.get('total_datasets_found', 0)
         st.markdown(f"**Total Datasets Found:** {total_datasets}")
@@ -476,7 +476,7 @@ def display_analysis_results(
                     with st.expander(f"**{i}. {use_case_title}** ({use_case_total} datasets)"):
                         
                         if kaggle_datasets:
-                            st.markdown(f"#### 📊 Kaggle Datasets ({len(kaggle_datasets)} found)")
+                            st.markdown(f"#### Kaggle Datasets ({len(kaggle_datasets)} found)")
                             for j, dataset in enumerate(kaggle_datasets, 1):
                                 st.markdown(f"**{j}.** [{dataset['title']}]({dataset['url']})")
                                 st.markdown(f"- **Description:** {dataset['description']}")
@@ -484,7 +484,7 @@ def display_analysis_results(
                                 st.markdown("")
                         
                         if github_datasets:
-                            st.markdown(f"#### 💻 GitHub Datasets ({len(github_datasets)} found)")
+                            st.markdown(f"#### GitHub Datasets ({len(github_datasets)} found)")
                             for j, dataset in enumerate(github_datasets, 1):
                                 st.markdown(f"**{j}.** [{dataset['title']}]({dataset['url']})")
                                 st.markdown(f"- **Description:** {dataset['description']}")
@@ -494,11 +494,11 @@ def display_analysis_results(
             st.info("No datasets found for the generated use cases.")
     
     with tab4:
-        st.markdown("### 📋 Comprehensive Report")
+        st.markdown("### Comprehensive Report")
         st.markdown(comprehensive_report)
     
     with tab5:
-        st.markdown("### 💾 Export Options")
+        st.markdown("### Export Options")
         
         # Save report
         import os
@@ -513,7 +513,7 @@ def display_analysis_results(
         filename = f"outputs/{company_name.lower().replace(' ', '_')}_ai_market_research_report.md"
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(enhanced_report)
-        st.success(f"✅ Report saved as: {filename}")
+        st.success(f"Report saved as: {filename}")
         
         # Download button
         enhanced_report = generate_enhanced_report_with_datasets(
@@ -525,7 +525,7 @@ def display_analysis_results(
         
         with col1:
             st.download_button(
-                label="📥 Download Markdown Report",
+                label="Download Markdown Report",
                 data=enhanced_report,
                 file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.md",
                 mime="text/markdown",
@@ -554,7 +554,7 @@ def display_analysis_results(
                 os.remove(pdf_path)
                 
                 st.download_button(
-                    label="📄 Download PDF Report",
+                    label="Download PDF Report",
                     data=pdf_data,
                     file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.pdf",
                     mime="application/pdf",
@@ -563,12 +563,12 @@ def display_analysis_results(
                 )
                 
             except Exception as e:
-                st.error(f"❌ PDF conversion failed: {str(e)}")
-                st.info("💡 Make sure wkhtmltopdf is installed. See requirements for setup instructions.")
+                st.error(f"PDF conversion failed: {str(e)}")
+                st.info("Make sure wkhtmltopdf is installed. See requirements for setup instructions.")
         
         # Implementation roadmap
         roadmap = strategic_use_cases.get('implementation_roadmap', {})
-        st.markdown("### 🗺️ Implementation Roadmap")
+        st.markdown("### Implementation Roadmap")
         st.write(f"**Timeline:** {roadmap.get('total_timeline', '24 months')}")
         st.write(f"**Overview:** {roadmap.get('roadmap_overview', 'Three-phase approach')}")
 
@@ -579,16 +579,16 @@ def generate_enhanced_report_with_datasets(base_report: str, dataset_results: Di
 
 **Generated:** {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}  
 **System:** 3-Agent AI Market Research System  
-**Status:** ✅ All agents completed successfully
+**Status:** All agents completed successfully
 
 ---
 
 ## 🤖 System Performance Summary
 
-- **Agent 1 (Industry Research):** ✅ Completed
-- **Agent 2 (Use Case Generation):** ✅ Completed  
-- **Agent 3 (Dataset Discovery):** ✅ Completed
-- **Report Generation:** ✅ Completed
+- **Agent 1 (Industry Research):** Completed
+- **Agent 2 (Use Case Generation):** Completed  
+- **Agent 3 (Dataset Discovery):** Completed
+- **Report Generation:** Completed
 
 ---
 
@@ -596,7 +596,7 @@ def generate_enhanced_report_with_datasets(base_report: str, dataset_results: Di
 
 ---
 
-## 📊 Dataset Discovery Results
+## Dataset Discovery Results
 
 **Total Datasets Found:** {dataset_results.get('total_datasets_found', 0)}
 
@@ -617,14 +617,14 @@ def generate_enhanced_report_with_datasets(base_report: str, dataset_results: Di
 """
         
         if kaggle_datasets:
-            enhanced_report += f"#### 📊 Kaggle Datasets ({len(kaggle_datasets)} found)\n\n"
+            enhanced_report += f"#### Kaggle Datasets ({len(kaggle_datasets)} found)\n\n"
             for j, dataset in enumerate(kaggle_datasets, 1):
                 enhanced_report += f"{j}. [{dataset['title']}]({dataset['url']})\n"
                 enhanced_report += f"   - **Description:** {dataset['description']}\n"
                 enhanced_report += f"   - **Relevance Score:** {dataset['relevance_score']:.2f}\n\n"
         
         if github_datasets:
-            enhanced_report += f"#### 💻 GitHub Datasets ({len(github_datasets)} found)\n\n"
+            enhanced_report += f"#### GitHub Datasets ({len(github_datasets)} found)\n\n"
             for j, dataset in enumerate(github_datasets, 1):
                 enhanced_report += f"{j}. [{dataset['title']}]({dataset['url']})\n"
                 enhanced_report += f"   - **Description:** {dataset['description']}\n"
@@ -636,15 +636,15 @@ def generate_enhanced_report_with_datasets(base_report: str, dataset_results: Di
         enhanced_report += "---\n\n"
     
     enhanced_report += f"""
-## 🎯 System Evaluation
+## System Evaluation
 
-### ✅ Success Metrics:
+### Success Metrics:
 - **Multi-Agent Coordination:** All 3 agents executed successfully in sequence
 - **Data Flow:** Information passed correctly between agents
 - **Output Quality:** High-quality research, use cases, and dataset discoveries
 - **Integration:** Seamless workflow from research → use cases → datasets → report
 
-### 🚀 Ready for Production:
+### Ready for Production:
 This 3-agent system demonstrates:
 - **Deep Market Research** with comprehensive source gathering
 - **Strategic AI Use Case Generation** with feasibility analysis
