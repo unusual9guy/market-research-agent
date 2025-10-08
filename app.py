@@ -20,7 +20,7 @@ st.set_page_config(
     page_title="AI Market Research Agent",
     page_icon="📊",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
 # Custom CSS for better styling
@@ -241,10 +241,79 @@ st.markdown("""
     text-align: left !important;
 }
 
+/* Force left-align report content for better readability */
+.block-container .stExpander .streamlit-expanderContent,
+.block-container .stTabs [data-baseweb="tab-panel"],
+.block-container .stTabs [data-baseweb="tab-panel"] *,
+.block-container .stTabs [data-baseweb="tab-panel"] .stMarkdown,
+.block-container .stTabs [data-baseweb="tab-panel"] .stMarkdown *,
+.block-container .stTabs [data-baseweb="tab-panel"] p,
+.block-container .stTabs [data-baseweb="tab-panel"] div,
+.block-container .stTabs [data-baseweb="tab-panel"] ul,
+.block-container .stTabs [data-baseweb="tab-panel"] ol,
+.block-container .stTabs [data-baseweb="tab-panel"] li,
+.block-container .stTabs [data-baseweb="tab-panel"] h1,
+.block-container .stTabs [data-baseweb="tab-panel"] h2,
+.block-container .stTabs [data-baseweb="tab-panel"] h3,
+.block-container .stTabs [data-baseweb="tab-panel"] h4,
+.block-container .stTabs [data-baseweb="tab-panel"] h5,
+.block-container .stTabs [data-baseweb="tab-panel"] h6 {
+    text-align: left !important;
+}
+
+/* Force left-align report content in expanders */
+.block-container .streamlit-expanderContent,
+.block-container .streamlit-expanderContent *,
+.block-container .streamlit-expanderContent .stMarkdown,
+.block-container .streamlit-expanderContent .stMarkdown *,
+.block-container .streamlit-expanderContent p,
+.block-container .streamlit-expanderContent div,
+.block-container .streamlit-expanderContent ul,
+.block-container .streamlit-expanderContent ol,
+.block-container .streamlit-expanderContent li,
+.block-container .streamlit-expanderContent h1,
+.block-container .streamlit-expanderContent h2,
+.block-container .streamlit-expanderContent h3,
+.block-container .streamlit-expanderContent h4,
+.block-container .streamlit-expanderContent h5,
+.block-container .streamlit-expanderContent h6 {
+    text-align: left !important;
+}
+
 /* Center the Generate Analysis button specifically */
 .block-container .stButton {
     display: flex !important;
     justify-content: center !important;
+}
+
+/* Center-align metric values for better visual alignment */
+.block-container .stMetric {
+    text-align: center !important;
+}
+
+.block-container .stMetric > div {
+    text-align: center !important;
+}
+
+.block-container .stMetric > div > div {
+    text-align: center !important;
+}
+
+.block-container .stMetric > div > div > div {
+    text-align: center !important;
+}
+
+.block-container .stMetric [data-testid="metric-value"],
+.block-container .stMetric [data-testid="metric-label"],
+.block-container .stMetric .metric-value,
+.block-container .stMetric .metric-label {
+    text-align: center !important;
+    display: block !important;
+}
+
+/* Force center alignment for all metric content */
+.block-container .stMetric * {
+    text-align: center !important;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -260,35 +329,14 @@ def main():
     if 'agent_progress_log' not in st.session_state:
         st.session_state.agent_progress_log = []
     
-    # Sidebar configuration
-    with st.sidebar:
-        st.markdown("### Configuration")
-        
-        # API Key validation
-        missing_keys = config.validate_required_keys()
-        if missing_keys:
-            st.error(f"Missing API keys: {', '.join(missing_keys)}")
-            st.info("Please configure your API keys in the .env file")
-            st.stop()
-        else:
-            st.success("✅API keys configured")
-        
-        
-        
-        
-        # Quick stats
-        if 'analysis_results' in st.session_state:
-            st.markdown("### Last Analysis")
-            results = st.session_state.analysis_results
-            use_cases = results.get('strategic_use_cases', {}).get('strategic_use_cases', [])
-            datasets = results.get('dataset_results', {}).get('total_datasets_found', 0)
-            
-            st.metric("Use Cases", len(use_cases))
-            st.metric("Datasets Found", datasets)
-            
-            if st.button("Clear Results", type="secondary", use_container_width=True):
-                del st.session_state.analysis_results
-                st.rerun()
+    # API Key validation with floating notification
+    missing_keys = config.validate_required_keys()
+    if missing_keys:
+        st.error(f"Missing API keys: {', '.join(missing_keys)}")
+        st.info("Please configure your API keys in the .env file")
+        st.stop()
+    else:
+        st.toast("API keys configured successfully!", icon="✅")
     
     # Initialize session state for company name (for example buttons only)
     if 'selected_company' not in st.session_state:
@@ -310,7 +358,7 @@ def main():
             
         with col3:
             st.markdown("### Dataset Discovery")
-            st.info("Rich dataset sourcing from Kaggle and GitHub for each use case")
+            st.info("Finds Rich dataset from Kaggle and GitHub for each use case")
         
         # Example companies and industries
         st.markdown("### Example Companies & Industries to Analyze:")
@@ -384,7 +432,6 @@ def main():
             "**Flexible Input** - Works with both companies and industries",
             "**Professional Reports** - Executive-ready analysis and recommendations",
             "**Fast Processing** - Complete analysis in under 5 minutes",
-            "**Processing Time: ~5 minutes**"
         ]
         
         for capability in capabilities:
@@ -394,6 +441,13 @@ def main():
     if 'analysis_results' in st.session_state:
         st.markdown("---")
         st.markdown('<h2 class="section-header">Analysis Results</h2>', unsafe_allow_html=True)
+        
+        # Clear Results button
+        col1, col2, col3 = st.columns([1, 1, 1])
+        with col2:
+            if st.button("Clear Results", type="secondary", use_container_width=True):
+                del st.session_state.analysis_results
+                st.rerun()
         
         # Display the stored results
         results = st.session_state.analysis_results
@@ -524,24 +578,35 @@ def display_analysis_results(
     # Summary metrics
     st.markdown('<h2 class="section-header">Analysis Summary</h2>', unsafe_allow_html=True)
     
-    col1, col2, col3, col4 = st.columns(4)
+    # Get metric values
+    research_sources = deep_research.get('research_sources', {})
+    total_sources = sum(len(sources) for sources in research_sources.values())
+    use_cases = strategic_use_cases.get('strategic_use_cases', [])
+    total_datasets = dataset_results.get('total_datasets_found', 0)
+    high_innovation = sum(1 for uc in use_cases if 'High' in str(uc.get('innovation_level', '')))
     
-    with col1:
-        research_sources = deep_research.get('research_sources', {})
-        total_sources = sum(len(sources) for sources in research_sources.values())
-        st.metric("Research Sources", total_sources)
-    
-    with col2:
-        use_cases = strategic_use_cases.get('strategic_use_cases', [])
-        st.metric("AI Use Cases", len(use_cases))
-    
-    with col3:
-        total_datasets = dataset_results.get('total_datasets_found', 0)
-        st.metric("Datasets Found", total_datasets)
-    
-    with col4:
-        high_innovation = sum(1 for uc in use_cases if 'High' in str(uc.get('innovation_level', '')))
-        st.metric("High Innovation", f"{high_innovation}/{len(use_cases)}")
+    # Create custom aligned metrics using HTML
+    metrics_html = f"""
+    <div style="display: flex; justify-content: space-around; margin: 20px 0;">
+        <div style="text-align: center; flex: 1;">
+            <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Research Sources</div>
+            <div style="font-size: 24px; font-weight: bold; color: #fff;">{total_sources}</div>
+        </div>
+        <div style="text-align: center; flex: 1;">
+            <div style="font-size: 14px; color: #666; margin-bottom: 5px;">AI Use Cases</div>
+            <div style="font-size: 24px; font-weight: bold; color: #fff;">{len(use_cases)}</div>
+        </div>
+        <div style="text-align: center; flex: 1;">
+            <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Datasets Found</div>
+            <div style="font-size: 24px; font-weight: bold; color: #fff;">{total_datasets}</div>
+        </div>
+        <div style="text-align: center; flex: 1;">
+            <div style="font-size: 14px; color: #666; margin-bottom: 5px;">High Innovation</div>
+            <div style="font-size: 24px; font-weight: bold; color: #fff;">{high_innovation}/{len(use_cases)}</div>
+        </div>
+    </div>
+    """
+    st.markdown(metrics_html, unsafe_allow_html=True)
     
     
     # Tabs for different sections
@@ -812,3 +877,4 @@ This 3-agent system demonstrates:
 
 if __name__ == "__main__":
     main()
+
