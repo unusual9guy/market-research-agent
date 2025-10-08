@@ -146,7 +146,6 @@ def main():
         
         
         # Analysis button
-        st.markdown("### 🚀 Start Analysis")
         analyze_button = st.button(
             "Generate Analysis",
             type="primary",
@@ -157,7 +156,7 @@ def main():
         
         # Quick info
         st.markdown("### 📊 System Info")
-        st.info("""
+        st.markdown("""
         **3-Agent System:**
         - Industry Research Agent
         - Use Case Generation Agent  
