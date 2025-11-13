@@ -1,7 +1,6 @@
 """
 Web Search Utility using Tavily API for market research.
 """
-import asyncio
 import logging
 from typing import List, Dict, Any, Optional
 from tavily import TavilyClient
