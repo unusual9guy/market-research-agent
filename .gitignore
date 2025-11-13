@@ -6,3 +6,4 @@ test_complete_system.py
 legacy_agents
 compare_search_engines.py
 tests
+/outputs
