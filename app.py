@@ -570,14 +570,11 @@ def run_market_research_analysis(company_name: str):
             'comprehensive_report': comprehensive_report
         }
         
-        # Display results
-        display_analysis_results(
-            company_name, deep_research, strategic_use_cases, 
-            dataset_results, comprehensive_report
-        )
-        
         # Clear analysis in progress flag
         st.session_state.analysis_in_progress = False
+        
+        # Rerun to display results (main() will handle display via session state)
+        st.rerun()
         
     except Exception as e:
         st.error(f"Analysis failed: {str(e)}")
@@ -748,11 +745,6 @@ def display_analysis_results(
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(enhanced_report)
         st.success(f"Report saved as: {filename}")
-        
-        # Download button
-        enhanced_report = generate_enhanced_report_with_datasets(
-            comprehensive_report, dataset_results
-        )
         
         # Create two columns for download buttons
         col1, col2 = st.columns(2)
