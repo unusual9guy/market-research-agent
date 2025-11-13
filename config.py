@@ -2,7 +2,7 @@
 Configuration settings for the Market Research Agent system.
 """
 import os
-from typing import Optional
+from typing import Optional, List
 from dotenv import load_dotenv
 
 # Load environment variables
@@ -29,7 +29,7 @@ class Config:
     ENABLE_DEBUG: bool = os.getenv("ENABLE_DEBUG", "false").lower() == "true"
     
     @classmethod
-    def validate_required_keys(cls) -> list[str]:
+    def validate_required_keys(cls) -> List[str]:
         """Validate that required API keys are present."""
         missing_keys = []
         
