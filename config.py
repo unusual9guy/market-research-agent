@@ -44,6 +44,26 @@ class Config:
     def is_configured(cls) -> bool:
         """Check if minimum required configuration is present."""
         return len(cls.validate_required_keys()) == 0
+    
+    @staticmethod
+    def mask_api_key(key: Optional[str], visible_chars: int = 4) -> str:
+        """
+        Mask API key for safe logging/display.
+        
+        Args:
+            key: API key to mask
+            visible_chars: Number of characters to show at the end
+            
+        Returns:
+            Masked key string (e.g., "sk-...abcd")
+        """
+        if not key:
+            return "Not set"
+        
+        if len(key) <= visible_chars:
+            return "*" * len(key)
+        
+        return "*" * (len(key) - visible_chars) + key[-visible_chars:]
 
 # Create global config instance
 config = Config()
