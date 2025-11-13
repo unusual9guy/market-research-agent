@@ -4,7 +4,6 @@ Enhanced Industry Research Agent with deeper market analysis.
 import logging
 from typing import Dict, List, Any, Optional
 from langchain_openai import ChatOpenAI
-# from langchain.schema import HumanMessage, SystemMessage
 from langchain_core.messages import HumanMessage, SystemMessage
 from utils.web_searcher import WebSearcher  # Back to Tavily for better sources
 from config import config

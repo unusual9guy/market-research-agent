@@ -4,7 +4,7 @@ Enhanced Use Case Generation Agent with creativity and feasibility analysis.
 import logging
 from typing import Dict, List, Any, Optional
 from langchain_openai import ChatOpenAI
-from langchain.schema import HumanMessage, SystemMessage
+from langchain_core.messages import HumanMessage, SystemMessage
 from utils.web_searcher import WebSearcher
 from config import config
 
