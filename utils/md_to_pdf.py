@@ -9,7 +9,6 @@ import sys
 from pathlib import Path
 import markdown
 import pdfkit
-from markdown.extensions import tables, fenced_code, toc
 
 def convert_md_to_pdf(md_file_path: str, output_path: str = None) -> str:
     """
