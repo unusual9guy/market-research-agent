@@ -6,7 +6,7 @@ import logging
 import re
 import os
 import tempfile
-from typing import Dict
+from typing import Dict, Any
 from datetime import datetime
 from agents.enhanced_industry_agent import EnhancedIndustryResearchAgent
 from agents.enhanced_use_case_agent import EnhancedUseCaseGenerationAgent
@@ -19,7 +19,13 @@ from config import config
 logging.basicConfig(level=logging.WARNING)  # Reduce log noise in demo
 logger = logging.getLogger(__name__)
 
-def sanitize_filename(name: str, max_length: int = 100) -> str:
+# Constants
+MAX_CONTENT_PREVIEW_LENGTH = 500
+MAX_SOURCES_DISPLAY = 3
+RELEVANCE_SCORE_THRESHOLD = 0.6
+MAX_FILENAME_LENGTH = 100
+
+def sanitize_filename(name: str, max_length: int = MAX_FILENAME_LENGTH) -> str:
     """
     Sanitize company/industry name for safe use in file paths.
     
@@ -502,7 +508,7 @@ def main():
             results['comprehensive_report']
         )
 
-def run_market_research_analysis(company_name: str):
+def run_market_research_analysis(company_name: str) -> None:
     """Run the complete market research analysis."""
     
     # Set analysis in progress
@@ -616,11 +622,11 @@ def run_market_research_analysis(company_name: str):
 
 def display_analysis_results(
     company_name: str, 
-    deep_research: Dict, 
-    strategic_use_cases: Dict, 
-    dataset_results: Dict,
+    deep_research: Dict[str, Any], 
+    strategic_use_cases: Dict[str, Any], 
+    dataset_results: Dict[str, Any],
     comprehensive_report: str
-):
+) -> None:
     """Display the analysis results in a structured format."""
     
     # Summary metrics
@@ -668,7 +674,10 @@ def display_analysis_results(
         st.markdown("**Company Analysis:**")
         company_content = company_analysis.get('structured_content', 'Analysis in progress')
         if company_content and isinstance(company_content, str):
-            st.write(company_content[:500] + ("..." if len(company_content) > 500 else ""))
+            preview = company_content[:MAX_CONTENT_PREVIEW_LENGTH]
+            if len(company_content) > MAX_CONTENT_PREVIEW_LENGTH:
+                preview += "..."
+            st.write(preview)
         else:
             st.write(company_content)
         
@@ -677,7 +686,10 @@ def display_analysis_results(
         st.markdown("**Market Position:**")
         market_content = market_analysis.get('structured_content', 'Analysis in progress')
         if market_content and isinstance(market_content, str):
-            st.write(market_content[:500] + ("..." if len(market_content) > 500 else ""))
+            preview = market_content[:MAX_CONTENT_PREVIEW_LENGTH]
+            if len(market_content) > MAX_CONTENT_PREVIEW_LENGTH:
+                preview += "..."
+            st.write(preview)
         else:
             st.write(market_content)
         
@@ -686,7 +698,7 @@ def display_analysis_results(
         for category, sources in research_sources.items():
             if sources:
                 st.markdown(f"**{category.replace('_', ' ').title()}:**")
-                for source in sources[:3]:  # Top 3 sources
+                for source in sources[:MAX_SOURCES_DISPLAY]:
                     st.markdown(f"- [{source.get('title', 'Source')[:80]}]({source.get('url', '#')})")
     
     with tab2:
