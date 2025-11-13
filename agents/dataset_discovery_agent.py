@@ -10,7 +10,6 @@ NO OTHER WEBSITES OR SOURCES!
 """
 
 import logging
-import requests
 import os
 from typing import List, Dict, Any
 from datetime import datetime
