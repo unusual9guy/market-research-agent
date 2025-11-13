@@ -14,6 +14,7 @@ from config import config
 
 # Set up logging
 logging.basicConfig(level=logging.WARNING)  # Reduce log noise in demo
+logger = logging.getLogger(__name__)
 
 # Page configuration
 st.set_page_config(
@@ -633,12 +634,20 @@ def display_analysis_results(
         # Company foundation
         company_analysis = deep_research.get('company_foundation', {})
         st.markdown("**Company Analysis:**")
-        st.write(company_analysis.get('structured_content', 'Analysis in progress')[:500] + "...")
+        company_content = company_analysis.get('structured_content', 'Analysis in progress')
+        if company_content and isinstance(company_content, str):
+            st.write(company_content[:500] + ("..." if len(company_content) > 500 else ""))
+        else:
+            st.write(company_content)
         
         # Market analysis
         market_analysis = deep_research.get('market_analysis', {})
         st.markdown("**Market Position:**")
-        st.write(market_analysis.get('structured_content', 'Analysis in progress')[:500] + "...")
+        market_content = market_analysis.get('structured_content', 'Analysis in progress')
+        if market_content and isinstance(market_content, str):
+            st.write(market_content[:500] + ("..." if len(market_content) > 500 else ""))
+        else:
+            st.write(market_content)
         
         # Sources
         st.markdown("**Research Sources:**")
@@ -761,6 +770,8 @@ def display_analysis_results(
         
         with col2:
             # PDF Download button
+            temp_md_file = None
+            pdf_path = None
             try:
                 # Create temporary markdown file for PDF conversion
                 temp_md_file = f"temp_{company_name.lower().replace(' ', '_')}_report.md"
@@ -774,11 +785,6 @@ def display_analysis_results(
                 with open(pdf_path, 'rb') as f:
                     pdf_data = f.read()
                 
-                # Clean up temporary files
-                import os
-                os.remove(temp_md_file)
-                os.remove(pdf_path)
-                
                 st.download_button(
                     label="Download PDF Report",
                     data=pdf_data,
@@ -791,6 +797,19 @@ def display_analysis_results(
             except Exception as e:
                 st.error(f"PDF conversion failed: {str(e)}")
                 st.info("Make sure wkhtmltopdf is installed. See requirements for setup instructions.")
+            finally:
+                # Clean up temporary files regardless of success or failure
+                import os
+                if temp_md_file and os.path.exists(temp_md_file):
+                    try:
+                        os.remove(temp_md_file)
+                    except Exception as cleanup_error:
+                        logger.warning(f"Failed to remove temp file {temp_md_file}: {cleanup_error}")
+                if pdf_path and os.path.exists(pdf_path):
+                    try:
+                        os.remove(pdf_path)
+                    except Exception as cleanup_error:
+                        logger.warning(f"Failed to remove PDF file {pdf_path}: {cleanup_error}")
         
         # Implementation roadmap
         roadmap = strategic_use_cases.get('implementation_roadmap', {})
