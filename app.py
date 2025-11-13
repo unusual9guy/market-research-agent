@@ -3,6 +3,9 @@ Streamlit Demo Interface for Multi-Agent Market Research System
 """
 import streamlit as st
 import logging
+import re
+import os
+import tempfile
 from typing import Dict
 from datetime import datetime
 from agents.enhanced_industry_agent import EnhancedIndustryResearchAgent
@@ -15,6 +18,39 @@ from config import config
 # Set up logging
 logging.basicConfig(level=logging.WARNING)  # Reduce log noise in demo
 logger = logging.getLogger(__name__)
+
+def sanitize_filename(name: str, max_length: int = 100) -> str:
+    """
+    Sanitize company/industry name for safe use in file paths.
+    
+    Args:
+        name: Input string to sanitize
+        max_length: Maximum length for the sanitized string
+        
+    Returns:
+        Sanitized string safe for file operations
+    """
+    if not name or not isinstance(name, str):
+        return "unknown"
+    
+    # Remove path traversal attempts and dangerous characters
+    sanitized = re.sub(r'[<>:"/\\|?*\x00-\x1f]', '', name)
+    
+    # Replace spaces and multiple underscores with single underscore
+    sanitized = re.sub(r'[\s_]+', '_', sanitized)
+    
+    # Remove leading/trailing dots and underscores
+    sanitized = sanitized.strip('._')
+    
+    # Limit length
+    if len(sanitized) > max_length:
+        sanitized = sanitized[:max_length]
+    
+    # Ensure it's not empty after sanitization
+    if not sanitized:
+        return "unknown"
+    
+    return sanitized.lower()
 
 # Page configuration
 st.set_page_config(
@@ -325,10 +361,6 @@ def main():
     # Header
     st.markdown('<h1 class="main-header">AI-Powered Market Research Agent</h1>', unsafe_allow_html=True)
     st.markdown("### Multi-Agent System for Automated Market Research & AI Use Case Generation")
-    
-    # Agent progress log container (will be populated during analysis)
-    if 'agent_progress_log' not in st.session_state:
-        st.session_state.agent_progress_log = []
     
     # API Key validation with floating notification
     missing_keys = config.validate_required_keys()
@@ -741,7 +773,6 @@ def display_analysis_results(
         st.markdown("### Export Options")
         
         # Save report
-        import os
         # Ensure outputs directory exists
         os.makedirs('outputs', exist_ok=True)
         
@@ -750,7 +781,9 @@ def display_analysis_results(
             comprehensive_report, dataset_results
         )
         
-        filename = f"outputs/{company_name.lower().replace(' ', '_')}_ai_market_research_report.md"
+        # Sanitize company name for safe file operations
+        safe_company_name = sanitize_filename(company_name)
+        filename = f"outputs/{safe_company_name}_ai_market_research_report.md"
         with open(filename, 'w', encoding='utf-8') as f:
             f.write(enhanced_report)
         st.success(f"Report saved as: {filename}")
@@ -762,10 +795,10 @@ def display_analysis_results(
             st.download_button(
                 label="Download Markdown Report",
                 data=enhanced_report,
-                file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.md",
+                file_name=f"{safe_company_name}_complete_3_agent_report.md",
                 mime="text/markdown",
                 help="Download the complete report with datasets as a Markdown file",
-                key=f"download_md_{company_name.replace(' ', '_')}"
+                key=f"download_md_{safe_company_name}"
             )
         
         with col2:
@@ -773,10 +806,10 @@ def display_analysis_results(
             temp_md_file = None
             pdf_path = None
             try:
-                # Create temporary markdown file for PDF conversion
-                temp_md_file = f"temp_{company_name.lower().replace(' ', '_')}_report.md"
-                with open(temp_md_file, 'w', encoding='utf-8') as f:
-                    f.write(enhanced_report)
+                # Create temporary markdown file for PDF conversion using tempfile
+                with tempfile.NamedTemporaryFile(mode='w', suffix='.md', delete=False, encoding='utf-8') as tmp_file:
+                    temp_md_file = tmp_file.name
+                    tmp_file.write(enhanced_report)
                 
                 # Convert to PDF
                 pdf_path = convert_md_to_pdf(temp_md_file)
@@ -788,10 +821,10 @@ def display_analysis_results(
                 st.download_button(
                     label="Download PDF Report",
                     data=pdf_data,
-                    file_name=f"{company_name.lower().replace(' ', '_')}_complete_3_agent_report.pdf",
+                    file_name=f"{safe_company_name}_complete_3_agent_report.pdf",
                     mime="application/pdf",
                     help="Download the complete report as a professional PDF document",
-                    key=f"download_pdf_{company_name.replace(' ', '_')}"
+                    key=f"download_pdf_{safe_company_name}"
                 )
                 
             except Exception as e:
@@ -799,7 +832,6 @@ def display_analysis_results(
                 st.info("Make sure wkhtmltopdf is installed. See requirements for setup instructions.")
             finally:
                 # Clean up temporary files regardless of success or failure
-                import os
                 if temp_md_file and os.path.exists(temp_md_file):
                     try:
                         os.remove(temp_md_file)
