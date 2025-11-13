@@ -119,8 +119,8 @@ class DatasetDiscoveryAgent:
                             dataset = self._format_kaggle_dataset(result)
                             if dataset and dataset not in datasets:
                                 datasets.append(dataset)
-                except:
-                    pass
+                except Exception as tavily_error:
+                    logger.warning(f"Tavily search failed for Kaggle query '{kaggle_query}': {tavily_error}")
                 
                 try:
                     # Exa search
@@ -130,8 +130,8 @@ class DatasetDiscoveryAgent:
                             dataset = self._format_kaggle_dataset(result)
                             if dataset and dataset not in datasets:
                                 datasets.append(dataset)
-                except:
-                    pass
+                except Exception as exa_error:
+                    logger.warning(f"Exa search failed for Kaggle query '{kaggle_query}': {exa_error}")
         
         except Exception as e:
             logger.error(f"Error searching Kaggle: {e}")
@@ -161,8 +161,8 @@ class DatasetDiscoveryAgent:
                             dataset = self._format_github_dataset(result)
                             if dataset and dataset not in datasets:
                                 datasets.append(dataset)
-                except:
-                    pass
+                except Exception as tavily_error:
+                    logger.warning(f"Tavily search failed for GitHub query '{github_query}': {tavily_error}")
                 
                 try:
                     # Exa search
@@ -172,8 +172,8 @@ class DatasetDiscoveryAgent:
                             dataset = self._format_github_dataset(result)
                             if dataset and dataset not in datasets:
                                 datasets.append(dataset)
-                except:
-                    pass
+                except Exception as exa_error:
+                    logger.warning(f"Exa search failed for GitHub query '{github_query}': {exa_error}")
         
         except Exception as e:
             logger.error(f"Error searching GitHub: {e}")
