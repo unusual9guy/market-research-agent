@@ -21,6 +21,11 @@ from config import config
 logging.basicConfig(level=logging.WARNING)  # Reduce noise
 logger = logging.getLogger(__name__)
 
+# Constants
+RELEVANCE_SCORE_THRESHOLD = 0.6
+MAX_KAGGLE_DATASETS_PER_USE_CASE = 5
+MAX_GITHUB_DATASETS_PER_USE_CASE = 3
+
 class DatasetDiscoveryAgent:
     """
     Dataset Discovery Agent that ONLY searches:
@@ -136,7 +141,7 @@ class DatasetDiscoveryAgent:
             logger.error(f"Error searching Kaggle: {e}")
         
         print(f"   📊 Found {len(datasets)} Kaggle datasets")
-        return datasets[:5]  # Max 5 Kaggle datasets per use case
+        return datasets[:MAX_KAGGLE_DATASETS_PER_USE_CASE]
     
     def _search_github_datasets(self, use_case_title: str, ai_solution: str) -> List[Dict[str, Any]]:
         """Search ONLY GitHub for datasets."""
@@ -178,7 +183,7 @@ class DatasetDiscoveryAgent:
             logger.error(f"Error searching GitHub: {e}")
         
         print(f"   💻 Found {len(datasets)} GitHub datasets")
-        return datasets[:3]  # Max 3 GitHub datasets per use case
+        return datasets[:MAX_GITHUB_DATASETS_PER_USE_CASE]
     
     
     def _extract_search_terms(self, use_case_title: str, ai_solution: str) -> List[str]:
@@ -236,7 +241,7 @@ class DatasetDiscoveryAgent:
         relevance_score = self._calculate_relevance_score(title, cleaned_description)
         
         # Only return if relevance score is above threshold
-        if relevance_score < 0.6:
+        if relevance_score < RELEVANCE_SCORE_THRESHOLD:
             return None
         
         return {
@@ -261,7 +266,7 @@ class DatasetDiscoveryAgent:
         relevance_score = self._calculate_relevance_score(title, cleaned_description)
         
         # Only return if relevance score is above threshold
-        if relevance_score < 0.6:
+        if relevance_score < RELEVANCE_SCORE_THRESHOLD:
             return None
         
         return {
