@@ -588,7 +588,7 @@ def generate_enhanced_report_with_datasets(base_report: str, dataset_results: Di
 
 ---
 
-## 🤖 System Performance Summary
+## System Performance Summary
 
 - **Agent 1 (Industry Research):** Completed
 - **Agent 2 (Use Case Generation):** Completed  

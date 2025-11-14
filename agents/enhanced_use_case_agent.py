@@ -129,7 +129,8 @@ class EnhancedUseCaseGenerationAgent:
         3. Emerging AI capabilities and techniques
         4. Market opportunities and competitive implications
         5. Implementation patterns and success factors
-        6. Technology maturity and adoption readiness"""
+        6. Technology maturity and adoption readiness
+        Maintain an executive, professional tone and do not use emojis or emoticons."""
         
         user_prompt = f"""
         Analyze the AI innovation landscape based on this research:
@@ -164,7 +165,8 @@ class EnhancedUseCaseGenerationAgent:
         3. Customer experience opportunities
         4. Operational optimization potential
         5. Revenue generation opportunities
-        6. Risk mitigation needs"""
+        6. Risk mitigation needs
+        Maintain an executive, professional tone and do not use emojis or emoticons."""
         
         company_context = str(deep_research.get('company_foundation', {}))
         competitive_context = str(deep_research.get('competitive_intelligence', {}))
@@ -235,7 +237,8 @@ class EnhancedUseCaseGenerationAgent:
         - **Revenue Impact**: Specific revenue/cost implications
         - **Implementation Approach**: Technical architecture and methodology
         - **Success Metrics**: How to measure success
-        - **Risk Assessment**: Key risks and mitigation strategies"""
+        - **Risk Assessment**: Key risks and mitigation strategies
+        Maintain an executive, professional tone and do not use emojis or emoticons."""
         
         company_context = f"""
         COMPANY: {company_name}

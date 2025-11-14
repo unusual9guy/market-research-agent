@@ -176,7 +176,8 @@ class EnhancedIndustryResearchAgent:
         5. Geographic presence and expansion strategy
         6. Recent strategic initiatives and partnerships
         
-        Provide detailed, insightful analysis that demonstrates deep market understanding."""
+        Provide detailed, insightful analysis that demonstrates deep market understanding.
+        Maintain an executive, professional tone and do not use emojis or emoticons."""
         
         user_prompt = f"""
         Conduct comprehensive analysis of {company_name} based on this research:
@@ -213,7 +214,8 @@ class EnhancedIndustryResearchAgent:
         3. Competitive positioning and market share
         4. Industry drivers and challenges
         5. Regulatory environment and barriers to entry
-        6. Future market projections and opportunities"""
+        6. Future market projections and opportunities
+        Maintain an executive, professional tone and do not use emojis or emoticons."""
         
         user_prompt = f"""
         Analyze the market position of {company_name} based on this market research:
@@ -250,7 +252,8 @@ class EnhancedIndustryResearchAgent:
         3. Competitive advantages and vulnerabilities
         4. Strategic moves and competitive responses
         5. Emerging threats and disruptors
-        6. Competitive dynamics and market share shifts"""
+        6. Competitive dynamics and market share shifts
+        Maintain an executive, professional tone and do not use emojis or emoticons."""
         
         user_prompt = f"""
         Analyze the competitive landscape for {company_name} based on this intelligence:
@@ -288,7 +291,8 @@ class EnhancedIndustryResearchAgent:
         3. Technology partnerships and ecosystem
         4. Digital transformation initiatives
         5. Emerging technology adoption readiness
-        6. Technology-driven competitive advantages"""
+        6. Technology-driven competitive advantages
+        Maintain an executive, professional tone and do not use emojis or emoticons."""
         
         user_prompt = f"""
         Analyze the technology landscape and innovation position of {company_name}:
@@ -331,7 +335,8 @@ class EnhancedIndustryResearchAgent:
         3. Growth opportunities and expansion vectors
         4. Risk assessment and mitigation strategies
         5. Innovation imperatives and technology roadmap
-        6. Competitive response strategies"""
+        6. Competitive response strategies
+        Maintain an executive, professional tone and do not use emojis or emoticons."""
         
         combined_analysis = f"""
         COMPANY FOUNDATION:
