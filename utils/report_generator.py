@@ -97,19 +97,22 @@ class ReportGenerator:
         section = f"""
 ### Current Industry Landscape
 
+**Company Analysis:**
+{self._get_full_text(company_analysis, 'Company analysis in progress.')}
+
 **Market Position & Dynamics:**
-{self._extract_key_insights(market_analysis.get('structured_content', 'Market analysis in progress'))}
+{self._get_full_text(market_analysis, 'Market analysis in progress.')}
 
 **Competitive Environment:**
-{self._extract_key_insights(competitive_analysis.get('structured_content', 'Competitive analysis in progress'))}
+{self._get_full_text(competitive_analysis, 'Competitive analysis in progress.')}
 
 **Technology Adoption Status:**
-{self._extract_key_insights(tech_analysis.get('structured_content', 'Technology analysis in progress'))}
+{self._get_full_text(tech_analysis, 'Technology analysis in progress.')}
 
 ### Emerging AI Trends & Standards
 
 **Latest AI Innovations in the Industry:**
-{self._extract_key_insights(innovation_landscape.get('innovation_analysis', 'AI innovation analysis in progress'))}
+{self._get_full_text({'structured_content': innovation_landscape.get('innovation_analysis')}, 'AI innovation analysis in progress.')}
 
 **Key Technology Trends:**
 {self._format_technology_trends(innovation_landscape.get('emerging_technologies', []))}
@@ -309,14 +312,14 @@ Based on industry analysis and capability gap assessment, we have identified **{
         return section.strip()
     
     # Helper methods for formatting
-    def _extract_key_insights(self, content: str) -> str:
-        """Extract key insights from analysis content."""
-        if not content or len(content) < 50:
-            return "Analysis in progress - detailed insights will be available shortly."
-        
-        # Take first few sentences or paragraphs
-        sentences = content.split('.')[:3]
-        return '. '.join(sentences) + '.' if sentences else content[:300] + '...'
+    def _get_full_text(self, section: Dict[str, Any], fallback: str) -> str:
+        """Return the full structured content for a report section."""
+        if not section:
+            return fallback
+        content = section.get('structured_content') if isinstance(section, dict) else section
+        if isinstance(content, str) and content.strip():
+            return content.strip()
+        return fallback
     
     def _format_technology_trends(self, trends: List[str]) -> str:
         """Format technology trends list."""

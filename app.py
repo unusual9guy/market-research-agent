@@ -21,8 +21,7 @@ logging.basicConfig(level=logging.WARNING)  # Reduce log noise in demo
 logger = logging.getLogger(__name__)
 
 # Constants
-MAX_CONTENT_PREVIEW_LENGTH = 500
-MAX_SOURCES_DISPLAY = 3
+SUMMARY_PREVIEW_LENGTH = 1000
 RELEVANCE_SCORE_THRESHOLD = 0.6
 MAX_FILENAME_LENGTH = 100
 
@@ -58,6 +57,23 @@ def sanitize_filename(name: str, max_length: int = MAX_FILENAME_LENGTH) -> str:
         return "unknown"
     
     return sanitized.lower()
+
+def truncate_text(text: str, max_length: int = SUMMARY_PREVIEW_LENGTH) -> str:
+    """Truncate text to a maximum length with ellipsis."""
+    if not text:
+        return ""
+    if len(text) <= max_length:
+        return text
+    return text[:max_length].rstrip() + "..."
+
+def get_structured_summary(section: Dict[str, Any], default: str = "Information not available.") -> str:
+    """Retrieve structured content from a section and truncate for summary display."""
+    if not section:
+        return default
+    content = section.get('structured_content')
+    if isinstance(content, str) and content.strip():
+        return truncate_text(content.strip())
+    return default
 
 # Page configuration
 st.set_page_config(
@@ -380,42 +396,63 @@ def display_analysis_results(
     
     
     # Tabs for different sections
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Industry Analysis", "AI Use Cases", "Datasets", "Full Report", "Export"])
+    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Search Summary", "AI Use Cases", "Datasets", "Full Report", "Export"])
     
     with tab1:
-        st.markdown("### Industry Research Summary")
+        st.markdown("### Executive Summary")
+        st.write(get_structured_summary(
+            deep_research.get('strategic_insights', {}),
+            "Strategic insights are being generated."
+        ))
         
-        # Company foundation
-        company_analysis = deep_research.get('company_foundation', {})
-        st.markdown("**Company Analysis:**")
-        company_content = company_analysis.get('structured_content', 'Analysis in progress')
-        if company_content and isinstance(company_content, str):
-            preview = company_content[:MAX_CONTENT_PREVIEW_LENGTH]
-            if len(company_content) > MAX_CONTENT_PREVIEW_LENGTH:
-                preview += "..."
-            st.write(preview)
-        else:
-            st.write(company_content)
+        st.markdown("### Industry Overview")
+        st.write(get_structured_summary(
+            deep_research.get('company_foundation', {}),
+            "Company analysis is being generated."
+        ))
         
-        # Market analysis
-        market_analysis = deep_research.get('market_analysis', {})
-        st.markdown("**Market Position:**")
-        market_content = market_analysis.get('structured_content', 'Analysis in progress')
-        if market_content and isinstance(market_content, str):
-            preview = market_content[:MAX_CONTENT_PREVIEW_LENGTH]
-            if len(market_content) > MAX_CONTENT_PREVIEW_LENGTH:
-                preview += "..."
-            st.write(preview)
-        else:
-            st.write(market_content)
+        st.markdown("### Market Position")
+        st.write(get_structured_summary(
+            deep_research.get('market_analysis', {}),
+            "Market analysis is being generated."
+        ))
         
-        # Sources
-        st.markdown("**Research Sources:**")
-        for category, sources in research_sources.items():
-            if sources:
-                st.markdown(f"**{category.replace('_', ' ').title()}:**")
-                for source in sources[:MAX_SOURCES_DISPLAY]:
-                    st.markdown(f"- [{source.get('title', 'Source')[:80]}]({source.get('url', '#')})")
+        st.markdown("### Competitive Landscape")
+        st.write(get_structured_summary(
+            deep_research.get('competitive_intelligence', {}),
+            "Competitive intelligence is being generated."
+        ))
+        
+        st.markdown("### Technology Landscape")
+        st.write(get_structured_summary(
+            deep_research.get('technology_landscape', {}),
+            "Technology analysis is being generated."
+        ))
+        
+        st.markdown("### Strategic AI Use Cases")
+        for i, use_case in enumerate(use_cases[:3], 1):
+            title = use_case.get('title', f'Use Case {i}')
+            st.markdown(f"**{i}. {title}**")
+            st.write(truncate_text(use_case.get('strategic_value', 'Strategic value analysis in progress.')))
+            st.caption(f"Priority: {use_case.get('priority_rank', i)} | Innovation: {use_case.get('innovation_level', 'High')}")
+        
+        if len(use_cases) > 3:
+            st.markdown(f"*{len(use_cases) - 3} Additional AI use cases are available in the AI Use Cases tab.*")
+        
+        st.markdown("### Dataset Summary")
+        st.write(f"**Total Datasets Found:** {dataset_results.get('total_datasets_found', 0)}")
+        st.write(f"**Use Cases Covered:** {len(dataset_results.get('use_case_datasets', []))}")
+        
+        st.markdown("### Implementation Roadmap Overview")
+        roadmap = strategic_use_cases.get('implementation_roadmap', {})
+        st.write(f"**Timeline:** {roadmap.get('total_timeline', '24 months')}")
+        st.write(roadmap.get('roadmap_overview', 'Implementation roadmap is being prepared.'))
+        
+        st.markdown("### Executive Recommendations")
+        recommendations = strategic_use_cases.get('executive_recommendations', {})
+        st.write(recommendations.get('strategic_recommendation', 'Executive recommendations are being generated.'))
+        if recommendations.get('immediate_priorities'):
+            st.write("**Immediate Priorities:** " + ", ".join(recommendations.get('immediate_priorities', [])))
     
     with tab2:
         st.markdown("### Strategic AI Use Cases")
