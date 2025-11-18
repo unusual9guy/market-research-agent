@@ -1,47 +1,129 @@
+/* Modern Color Palette */
+:root {
+    --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    --secondary-gradient: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    --success-gradient: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    --dark-bg: #1a1a2e;
+    --card-bg: #16213e;
+    --text-primary: #e4e4e4;
+    --text-secondary: #94a3b8;
+    --accent-blue: #667eea;
+    --accent-purple: #764ba2;
+    --accent-pink: #f5576c;
+}
+
+/* Main Header with Gradient */
 .main-header {
-    font-size: 2.5rem;
-    color: #1f77b4;
+    font-size: 3rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f5576c 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     text-align: center;
     margin-bottom: 2rem;
+    font-weight: 800;
+    letter-spacing: -1px;
+    animation: gradientShift 3s ease infinite;
 }
+
+@keyframes gradientShift {
+    0%, 100% { filter: hue-rotate(0deg); }
+    50% { filter: hue-rotate(10deg); }
+}
+
+/* Section Headers */
 .section-header {
-    font-size: 1.5rem;
-    color: #ff7f0e;
+    font-size: 1.8rem;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
     margin-top: 2rem;
     margin-bottom: 1rem;
+    font-weight: 700;
 }
+
+/* Enhanced Metric Cards */
 .metric-card {
-    background-color: #f0f2f6;
-    padding: 1rem;
-    border-radius: 0.5rem;
+    background: linear-gradient(145deg, #1e293b 0%, #334155 100%);
+    padding: 1.5rem;
+    border-radius: 16px;
     margin: 0.5rem 0;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s ease;
 }
+
+.metric-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 40px rgba(102, 126, 234, 0.4);
+    border-color: rgba(102, 126, 234, 0.5);
+}
+
+/* Stylish Buttons */
 .example-button {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
     border: none;
-    border-radius: 10px;
-    padding: 15px 20px;
+    border-radius: 12px;
+    padding: 16px 32px;
     font-size: 16px;
     font-weight: 600;
-    transition: all 0.3s ease;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 8px 24px rgba(102, 126, 234, 0.4);
+    position: relative;
+    overflow: hidden;
 }
+
+.example-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.5s;
+}
+
+.example-button:hover::before {
+    left: 100%;
+}
+
 .example-button:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+    transform: translateY(-3px) scale(1.02);
+    box-shadow: 0 12px 32px rgba(102, 126, 234, 0.6);
 }
-/* Reduce padding for all alert boxes */
+/* Enhanced Alert Boxes */
+.stAlert {
+    border-radius: 12px !important;
+    border-left: 4px solid var(--accent-blue) !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+    animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
 .stAlert > div {
-    padding: 8px 12px !important;
+    padding: 12px 16px !important;
 }
 
 /* Target the first three info boxes specifically */
 .stAlert:nth-of-type(1),
 .stAlert:nth-of-type(2),
 .stAlert:nth-of-type(3) {
-    min-height: 80px !important;
-    margin-top: 5px !important;
+    min-height: 85px !important;
+    margin-top: 8px !important;
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%) !important;
 }
 
 /* Center text in the first three info boxes */
@@ -53,28 +135,160 @@
     align-items: center !important;
     justify-content: center !important;
     height: 100% !important;
+    font-weight: 500 !important;
 }
 
-/* Sidebar styling improvements */
+/* Enhanced Sidebar */
 .css-1d391kg {
     padding-top: 1rem;
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+}
+
+[data-testid="stSidebar"] {
+    background: linear-gradient(180deg, #0f172a 0%, #1e293b 100%);
+    border-right: 1px solid rgba(102, 126, 234, 0.2);
 }
 
 /* Sidebar section headers */
 .sidebar .stMarkdown h3 {
-    color: #1f77b4 !important;
-    margin-bottom: 0.3rem !important;
-    margin-top: 0.5rem !important;
+    color: #667eea !important;
+    margin-bottom: 0.5rem !important;
+    margin-top: 1rem !important;
+    font-weight: 600 !important;
+    font-size: 1.1rem !important;
 }
 
 /* Reduce spacing in sidebar */
 .sidebar .stMarkdown {
-    margin-bottom: 0.2rem !important;
+    margin-bottom: 0.3rem !important;
 }
 
-/* Reduce alert spacing */
+/* Enhanced sidebar alerts */
 .sidebar .stAlert {
-    margin-bottom: 0.5rem !important;
+    margin-bottom: 0.8rem !important;
+    border-radius: 8px !important;
+    background: rgba(102, 126, 234, 0.1) !important;
+    border-left: 3px solid var(--accent-blue) !important;
+}
+
+/* Modern Tab Styling */
+.stTabs [data-baseweb="tab-list"] {
+    gap: 8px;
+    background: transparent;
+    padding: 4px;
+}
+
+.stTabs [data-baseweb="tab"] {
+    border-radius: 10px;
+    padding: 12px 24px;
+    font-weight: 600;
+    background: transparent;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.stTabs [data-baseweb="tab"]:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.3);
+}
+
+.stTabs [data-baseweb="tab"][aria-selected="true"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white !important;
+    box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+}
+
+/* Enhanced Button Styling */
+.stButton > button {
+    border-radius: 12px;
+    padding: 12px 32px;
+    font-weight: 600;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.stButton > button[kind="primary"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.stButton > button[kind="primary"]:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+}
+
+.stButton > button[kind="secondary"] {
+    background: transparent;
+    border-color: var(--accent-blue);
+    color: var(--accent-blue);
+}
+
+.stButton > button[kind="secondary"]:hover {
+    background: rgba(102, 126, 234, 0.1);
+    transform: translateY(-2px);
+}
+
+/* Enhanced Download Button */
+.stDownloadButton > button {
+    border-radius: 12px;
+    padding: 12px 32px;
+    font-weight: 600;
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+    border: none;
+    color: white;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px rgba(79, 172, 254, 0.3);
+}
+
+.stDownloadButton > button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(79, 172, 254, 0.5);
+}
+
+/* Enhanced Text Input */
+.stTextInput > div > div > input {
+    border-radius: 10px;
+    border: 2px solid rgba(102, 126, 234, 0.3);
+    padding: 12px 16px;
+    transition: all 0.3s ease;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.stTextInput > div > div > input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* Enhanced Progress Bar */
+.stProgress > div > div > div {
+    background: linear-gradient(90deg, #667eea 0%, #764ba2 50%, #f5576c 100%);
+    border-radius: 10px;
+}
+
+/* Enhanced Expanders */
+.streamlit-expanderHeader {
+    background: rgba(102, 126, 234, 0.05);
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-weight: 600;
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    transition: all 0.3s ease;
+}
+
+.streamlit-expanderHeader:hover {
+    background: rgba(102, 126, 234, 0.1);
+    border-color: rgba(102, 126, 234, 0.4);
+}
+
+/* Enhanced Metrics */
+[data-testid="stMetricValue"] {
+    font-size: 2rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
 }
 
 /* Center all text elements in main content area */
@@ -286,5 +500,183 @@
 /* Force center alignment for all metric content */
 .block-container .stMetric * {
     text-align: center !important;
+}
+
+/* Modern Page Background */
+.stApp {
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #0f172a 100%);
+}
+
+/* Main container enhancement */
+.main .block-container {
+    padding-top: 3rem;
+    padding-bottom: 3rem;
+    max-width: 1200px;
+}
+
+/* Card-like containers for content sections */
+.stMarkdown {
+    animation: fadeIn 0.5s ease-in;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Enhanced scrollbar */
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: #1e293b;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    border: 2px solid #1e293b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #f5576c 100%);
+}
+
+/* Enhanced success message */
+.stSuccess {
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(5, 150, 105, 0.1) 100%) !important;
+    border-left: 4px solid #10b981 !important;
+    border-radius: 10px !important;
+}
+
+/* Enhanced error message */
+.stError {
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(220, 38, 38, 0.1) 100%) !important;
+    border-left: 4px solid #ef4444 !important;
+    border-radius: 10px !important;
+}
+
+/* Enhanced warning message */
+.stWarning {
+    background: linear-gradient(135deg, rgba(245, 158, 11, 0.1) 0%, rgba(217, 119, 6, 0.1) 100%) !important;
+    border-left: 4px solid #f59e0b !important;
+    border-radius: 10px !important;
+}
+
+/* Enhanced info message */
+.stInfo {
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(37, 99, 235, 0.1) 100%) !important;
+    border-left: 4px solid #3b82f6 !important;
+    border-radius: 10px !important;
+}
+
+/* Spinner styling */
+.stSpinner > div {
+    border-top-color: var(--accent-blue) !important;
+}
+
+/* Enhanced divider */
+hr {
+    border: none;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.5), transparent);
+    margin: 2rem 0;
+}
+
+/* Tooltip styling */
+[data-baseweb="tooltip"] {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 8px;
+    padding: 8px 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Code blocks */
+code {
+    background: rgba(102, 126, 234, 0.1);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent-blue);
+    font-family: 'Courier New', monospace;
+}
+
+pre {
+    background: rgba(30, 41, 59, 0.5);
+    border: 1px solid rgba(102, 126, 234, 0.2);
+    border-radius: 10px;
+    padding: 16px;
+    border-left: 4px solid var(--accent-blue);
+}
+
+/* Links */
+a {
+    color: var(--accent-blue);
+    text-decoration: none;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+a:hover {
+    color: var(--accent-purple);
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent-blue), var(--accent-purple));
+    transition: width 0.3s ease;
+}
+
+a:hover::after {
+    width: 100%;
+}
+
+/* Table styling */
+table {
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    font-weight: 600;
+    padding: 12px 16px;
+}
+
+td {
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(102, 126, 234, 0.1);
+}
+
+tr:hover {
+    background: rgba(102, 126, 234, 0.05);
+}
+
+/* Selection styling */
+::selection {
+    background: rgba(102, 126, 234, 0.3);
+    color: white;
+}
+
+::-moz-selection {
+    background: rgba(102, 126, 234, 0.3);
+    color: white;
 }
 
