@@ -131,66 +131,51 @@ def main():
             st.markdown("### Dataset Discovery")
             st.info("Finds Rich dataset from Kaggle and GitHub for each use case")
         
-        # Example companies and industries
-        st.markdown("### Example Companies & Industries to Analyze:")
-        example_cols = st.columns(4)
-        examples = ["Tesla", "Automotive Industry", "Netflix", "Streaming Industry"]
-        
-        for i, example in enumerate(examples):
-            with example_cols[i]:
-                button_html = f"""
-                <style>
-                .stButton > button:first-child {{
-                    background: #ff6b35;
-                    color: white;
-                    border: none;
-                    border-radius: 8px;
-                    padding: 15px 20px;
-                    font-size: 16px;
-                    font-weight: 600;
-                    width: 100%;
-                    transition: all 0.2s ease;
-                }}
-                .stButton > button:hover {{
-                    background: #e85d2a;
-                }}
-                </style>
-                """
-                st.markdown(button_html, unsafe_allow_html=True)
-                
-                if st.button(
-                    f"{example}", 
-                    key=f"example_{example}",
-                    use_container_width=True,
-                    type="secondary"
-                ):
-                    st.session_state.selected_company = example
-                    st.rerun()
-        
-        # Search and Analysis Section
-        st.markdown("### Analysis Input")
-        
-        # Check if analysis is running
-        analysis_running = 'analysis_in_progress' in st.session_state and st.session_state.analysis_in_progress
-        
-        company_name = st.text_input(
-            "**Company or Industry:**",
-            value=st.session_state.selected_company,
-            placeholder="e.g., Tesla, Automotive Industry",
-            help="Enter the name of any company or industry you want to analyze",
-            disabled=analysis_running
-        )
-        
-        # Analysis button - centered using columns
-        col1, col2, col3 = st.columns([1, 2, 1])
-        with col2:
-            analyze_button = st.button(
-                "Generate Analysis" if not analysis_running else "Analysis in Progress...",
-                type="primary",
-                disabled=not company_name.strip() or analysis_running,
-                help="Click to start comprehensive market research analysis" if not analysis_running else "Analysis is currently running",
-                use_container_width=True
+        # Create a container for the input box with styling
+        with st.container():
+            # Marker to identify this container
+            st.markdown('<div class="input-box-marker"></div>', unsafe_allow_html=True)
+            
+            st.markdown("### Analysis Input")
+            
+            # Check if analysis is running
+            analysis_running = 'analysis_in_progress' in st.session_state and st.session_state.analysis_in_progress
+            
+            company_name = st.text_input(
+                "**Company or Industry:**",
+                value=st.session_state.selected_company,
+                placeholder="e.g., Tesla, Automotive Industry",
+                help="Enter the name of any company or industry you want to analyze",
+                disabled=analysis_running
             )
+            
+            # Example companies and industries
+            st.markdown("#### Example Companies & Industries:")
+            example_cols = st.columns(4)
+            examples = ["Tesla", "Automotive Industry", "Netflix", "Streaming Industry"]
+            
+            for i, example in enumerate(examples):
+                with example_cols[i]:
+                    if st.button(
+                        f"{example}", 
+                        key=f"example_{example}",
+                        use_container_width=True,
+                        type="secondary"
+                    ):
+                        st.session_state.selected_company = example
+                        st.rerun()
+            
+            # Analysis button - centered using columns
+            st.markdown("")  # Add spacing
+            col1, col2, col3 = st.columns([1, 2, 1])
+            with col2:
+                analyze_button = st.button(
+                    "🚀 Generate Analysis" if not analysis_running else "⏳ Analysis in Progress...",
+                    type="primary",
+                    disabled=not company_name.strip() or analysis_running,
+                    help="Click to start comprehensive market research analysis" if not analysis_running else "Analysis is currently running",
+                    use_container_width=True
+                )
         
         # Run analysis if button clicked
         if analyze_button and company_name.strip():

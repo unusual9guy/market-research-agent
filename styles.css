@@ -94,7 +94,7 @@
 /* Text Input */
 .stTextInput > div > div > input {
     border-radius: 8px;
-    border: 2px solid var(--medium-gray);
+    border: 2px solid var(--primary-orange);
     padding: 10px 14px;
     background-color: var(--dark-gray);
     color: var(--text-primary);
@@ -102,6 +102,11 @@
 
 .stTextInput > div > div > input:focus {
     border-color: var(--primary-orange);
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+}
+
+.stTextInput > div > div > input::placeholder {
+    color: var(--text-secondary);
 }
 
 /* Tabs */
@@ -327,6 +332,24 @@ hr {
 ::-moz-selection {
     background-color: var(--primary-orange);
     color: white;
+}
+
+/* Input Container Box */
+div[data-testid="stVerticalBlock"]:has(div.input-box-marker) {
+    background-color: var(--dark-gray) !important;
+    border: 2px solid var(--primary-orange) !important;
+    border-radius: 12px !important;
+    padding: 30px !important;
+    margin-top: 30px !important;
+    margin-bottom: 30px !important;
+}
+
+/* Hide the marker div */
+.input-box-marker {
+    display: none !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* Center alignment for main content */
