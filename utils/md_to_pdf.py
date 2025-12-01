@@ -32,7 +32,7 @@ def convert_md_to_pdf(md_file_path: str, output_path: str = None) -> str:
             extensions=['tables', 'fenced_code', 'toc']
         )
         
-        # Create styled HTML with CSS
+        # Create styled HTML with CSS - Black and Orange Theme
         styled_html = f"""
         <!DOCTYPE html>
         <html>
@@ -43,38 +43,44 @@ def convert_md_to_pdf(md_file_path: str, output_path: str = None) -> str:
                 body {{
                     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
                     line-height: 1.6;
-                    color: #333;
+                    color: #1a1a1a;
                     max-width: 100%;
                     margin: 0;
                     padding: 20px;
+                    background-color: #ffffff;
                 }}
                 
                 h1 {{
-                    color: #2c3e50;
-                    border-bottom: 3px solid #3498db;
+                    color: #ff6b35;
+                    border-bottom: 3px solid #ff6b35;
                     padding-bottom: 10px;
+                    font-weight: 700;
                 }}
                 
                 h2 {{
-                    color: #34495e;
-                    border-bottom: 2px solid #ecf0f1;
+                    color: #ff6b35;
+                    border-bottom: 2px solid #e0e0e0;
                     padding-bottom: 8px;
                     margin-top: 30px;
+                    font-weight: 600;
                 }}
                 
                 h3 {{
-                    color: #2c3e50;
+                    color: #0a0a0a;
                     margin-top: 25px;
+                    font-weight: 600;
                 }}
                 
                 h4 {{
-                    color: #34495e;
+                    color: #1a1a1a;
                     margin-top: 20px;
+                    font-weight: 600;
                 }}
                 
                 p {{
                     margin-bottom: 12px;
                     text-align: justify;
+                    color: #1a1a1a;
                 }}
                 
                 ul, ol {{
@@ -84,6 +90,7 @@ def convert_md_to_pdf(md_file_path: str, output_path: str = None) -> str:
                 
                 li {{
                     margin-bottom: 5px;
+                    color: #1a1a1a;
                 }}
                 
                 table {{
@@ -93,14 +100,19 @@ def convert_md_to_pdf(md_file_path: str, output_path: str = None) -> str:
                 }}
                 
                 th, td {{
-                    border: 1px solid #ddd;
+                    border: 1px solid #e0e0e0;
                     padding: 12px;
                     text-align: left;
                 }}
                 
                 th {{
-                    background-color: #f8f9fa;
+                    background-color: #ff6b35;
+                    color: white;
                     font-weight: bold;
+                }}
+                
+                tr:nth-child(even) {{
+                    background-color: #f9f9f9;
                 }}
                 
                 code {{
@@ -108,44 +120,60 @@ def convert_md_to_pdf(md_file_path: str, output_path: str = None) -> str:
                     padding: 2px 4px;
                     border-radius: 3px;
                     font-family: 'Courier New', monospace;
+                    color: #ff6b35;
                 }}
                 
                 pre {{
-                    background-color: #f8f9fa;
+                    background-color: #f9f9f9;
                     padding: 15px;
                     border-radius: 5px;
-                    border-left: 4px solid #3498db;
+                    border-left: 4px solid #ff6b35;
                     overflow-x: auto;
                 }}
                 
                 pre code {{
                     background-color: transparent;
                     padding: 0;
+                    color: #1a1a1a;
                 }}
                 
                 blockquote {{
-                    border-left: 4px solid #3498db;
+                    border-left: 4px solid #ff6b35;
                     margin: 20px 0;
                     padding: 10px 20px;
-                    background-color: #f8f9fa;
+                    background-color: #f9f9f9;
                     font-style: italic;
+                    color: #1a1a1a;
                 }}
                 
                 .highlight {{
-                    background-color: #fff3cd;
+                    background-color: #fff5f0;
                     padding: 15px;
                     border-radius: 5px;
-                    border-left: 4px solid #ffc107;
+                    border-left: 4px solid #ff6b35;
                     margin: 15px 0;
                 }}
                 
                 .footer {{
                     margin-top: 50px;
                     padding-top: 20px;
-                    border-top: 1px solid #ecf0f1;
+                    border-top: 1px solid #e0e0e0;
                     font-size: 0.9em;
-                    color: #7f8c8d;
+                    color: #666666;
                     text-align: center;
+                }}
+                
+                strong {{
+                    color: #ff6b35;
+                }}
+                
+                a {{
+                    color: #ff6b35;
+                    text-decoration: none;
+                }}
+                
+                a:hover {{
+                    text-decoration: underline;
                 }}
             </style>
         </head>

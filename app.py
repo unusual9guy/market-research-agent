@@ -141,20 +141,18 @@ def main():
                 button_html = f"""
                 <style>
                 .stButton > button:first-child {{
-                    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+                    background: #ff6b35;
                     color: white;
                     border: none;
-                    border-radius: 10px;
+                    border-radius: 8px;
                     padding: 15px 20px;
                     font-size: 16px;
                     font-weight: 600;
                     width: 100%;
-                    transition: all 0.3s ease;
-                    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+                    transition: all 0.2s ease;
                 }}
                 .stButton > button:hover {{
-                    transform: translateY(-2px);
-                    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+                    background: #e85d2a;
                 }}
                 </style>
                 """
@@ -375,20 +373,20 @@ def display_analysis_results(
     metrics_html = f"""
     <div style="display: flex; justify-content: space-around; margin: 20px 0;">
         <div style="text-align: center; flex: 1;">
-            <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Research Sources</div>
-            <div style="font-size: 24px; font-weight: bold; color: #fff;">{total_sources}</div>
+            <div style="font-size: 14px; color: #b0b0b0; margin-bottom: 5px;">Research Sources</div>
+            <div style="font-size: 24px; font-weight: bold; color: #ff6b35;">{total_sources}</div>
         </div>
         <div style="text-align: center; flex: 1;">
-            <div style="font-size: 14px; color: #666; margin-bottom: 5px;">AI Use Cases</div>
-            <div style="font-size: 24px; font-weight: bold; color: #fff;">{len(use_cases)}</div>
+            <div style="font-size: 14px; color: #b0b0b0; margin-bottom: 5px;">AI Use Cases</div>
+            <div style="font-size: 24px; font-weight: bold; color: #ff6b35;">{len(use_cases)}</div>
         </div>
         <div style="text-align: center; flex: 1;">
-            <div style="font-size: 14px; color: #666; margin-bottom: 5px;">Datasets Found</div>
-            <div style="font-size: 24px; font-weight: bold; color: #fff;">{total_datasets}</div>
+            <div style="font-size: 14px; color: #b0b0b0; margin-bottom: 5px;">Datasets Found</div>
+            <div style="font-size: 24px; font-weight: bold; color: #ff6b35;">{total_datasets}</div>
         </div>
         <div style="text-align: center; flex: 1;">
-            <div style="font-size: 14px; color: #666; margin-bottom: 5px;">High Innovation</div>
-            <div style="font-size: 24px; font-weight: bold; color: #fff;">{high_innovation}/{len(use_cases)}</div>
+            <div style="font-size: 14px; color: #b0b0b0; margin-bottom: 5px;">High Innovation</div>
+            <div style="font-size: 24px; font-weight: bold; color: #ff6b35;">{high_innovation}/{len(use_cases)}</div>
         </div>
     </div>
     """
