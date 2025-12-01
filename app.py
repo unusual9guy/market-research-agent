@@ -229,16 +229,38 @@ def run_market_research_analysis(company_name: str) -> None:
     # Set analysis in progress
     st.session_state.analysis_in_progress = True
     
-    # Initialize progress tracking
-    progress_bar = st.progress(0)
+    # Initialize progress tracking with custom HTML progress bar
+    progress_container = st.empty()
     status_text = st.empty()
     log_container = st.empty()  # Container for detailed agent logs
+    
+    def update_progress(percentage):
+        """Update custom progress bar"""
+        progress_container.markdown(f"""
+        <div style="
+            width: 100%;
+            background-color: #0a0a0a;
+            border-radius: 4px;
+            height: 8px;
+            margin: 20px 0;
+            border: 1px solid #2a2a2a;
+            overflow: hidden;
+        ">
+            <div style="
+                width: {percentage}%;
+                background-color: #ff6b35;
+                height: 100%;
+                transition: width 0.3s ease;
+            ">
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
     
     
     try:
         # Initialize agents
         status_text.text("Initializing AI agents...")
-        progress_bar.progress(10)
+        update_progress(10)
         log_container.info("**Starting Multi-Agent Market Research System**")
         
         industry_agent = EnhancedIndustryResearchAgent()
@@ -250,7 +272,7 @@ def run_market_research_analysis(company_name: str) -> None:
         
         # Phase 1: Industry Research
         status_text.text("Conducting deep industry research...")
-        progress_bar.progress(20)
+        update_progress(20)
         log_container.info(f"**Agent 1 (Industry Research)**: Starting deep analysis for **{company_name}**...")
         
         with st.spinner("Analyzing industry landscape and competitive positioning..."):
@@ -262,14 +284,14 @@ def run_market_research_analysis(company_name: str) -> None:
             st.error(f"Industry research failed: {deep_research.get('error', 'Unknown error')}")
             return
         
-        progress_bar.progress(40)
+        update_progress(40)
         research_sources = deep_research.get('research_sources', {})
         total_sources = sum(len(sources) for sources in research_sources.values())
         log_container.success(f"**Agent 1 completed**: Found {total_sources} research sources for {company_name}")
         
         # Phase 2: Use Case Generation
         status_text.text("Generating strategic AI use cases...")
-        progress_bar.progress(60)
+        update_progress(60)
         log_container.info("**Agent 2 (Use Case Generation)**: Initializing and analyzing AI opportunities...")
         
         with st.spinner("Identifying AI opportunities and analyzing feasibility..."):
@@ -281,13 +303,13 @@ def run_market_research_analysis(company_name: str) -> None:
             st.error(f"Use case generation failed: {strategic_use_cases.get('error', 'Unknown error')}")
             return
         
-        progress_bar.progress(80)
+        update_progress(80)
         use_cases = strategic_use_cases.get('strategic_use_cases', [])
         log_container.success(f"**Agent 2 completed**: Generated {len(use_cases)} strategic AI use cases")
         
         # Phase 3: Dataset Discovery
         status_text.text("Discovering relevant datasets...")
-        progress_bar.progress(90)
+        update_progress(90)
         log_container.info("**Agent 3 (Dataset Discovery)**: Starting dataset search for generated use cases...")
         
         with st.spinner("Finding datasets on Kaggle and GitHub..."):
@@ -299,7 +321,7 @@ def run_market_research_analysis(company_name: str) -> None:
             st.error(f"Dataset discovery failed: {dataset_results.get('error', 'Unknown error')}")
             return
         
-        progress_bar.progress(95)
+        update_progress(95)
         total_datasets = dataset_results.get('total_datasets_found', 0)
         log_container.success(f"**Agent 3 completed**: Discovered {total_datasets} relevant datasets from Kaggle and GitHub")
         
@@ -311,7 +333,7 @@ def run_market_research_analysis(company_name: str) -> None:
             deep_research, strategic_use_cases
         )
         
-        progress_bar.progress(100)
+        update_progress(100)
         status_text.text("Analysis completed successfully!")
         log_container.success("**ALL SYSTEMS COMPLETE**: 3-agent analysis finished successfully!")
         

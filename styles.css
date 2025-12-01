@@ -182,9 +182,40 @@ div[data-baseweb="notification"] > div {
     border-left: 3px solid var(--primary-orange);
 }
 
-/* Progress Bar */
-.stProgress > div > div > div {
-    background-color: var(--primary-orange);
+/* Progress Bar - Black background, Orange fill */
+/* Override ALL progress bar backgrounds to black */
+.stProgress,
+.stProgress *,
+.stProgress > div,
+.stProgress > div > div,
+[data-testid="stProgress"],
+[data-testid="stProgress"] > div,
+[data-testid="stProgress"] > div > div,
+div[data-baseweb="progress-bar"],
+div[data-baseweb="progress-bar"] div {
+    background-color: var(--black) !important;
+}
+
+/* Progress fill (orange part) - more specific selectors */
+.stProgress > div > div > div,
+.stProgress > div > div > div > div,
+[data-testid="stProgress"] > div > div > div,
+[data-testid="stProgress"] > div > div > div > div,
+div[data-baseweb="progress-bar"] > div,
+div[data-baseweb="progress-bar"] > div > div,
+.stProgress div[role="progressbar"] > div,
+.stProgress div[style*="width"] {
+    background-color: var(--primary-orange) !important;
+}
+
+/* Target the actual moving bar */
+.stProgress [style*="width"] {
+    background-color: var(--primary-orange) !important;
+}
+
+/* Override any inline blue styles */
+.stProgress div[style*="background"] {
+    background-color: var(--primary-orange) !important;
 }
 
 /* Expanders */
