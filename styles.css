@@ -51,10 +51,11 @@
 
 /* Buttons */
 .stButton > button {
-    border-radius: 8px;
-    padding: 10px 24px;
-    font-weight: 600;
-    transition: all 0.2s ease;
+    border-radius: 8px !important;
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    transition: all 0.2s ease !important;
+    box-sizing: border-box !important;
 }
 
 .stButton > button[kind="primary"] {
@@ -93,22 +94,25 @@
     background: var(--dark-orange) !important;
 }
 
-/* Text Input */
+/* Text Input - Match button height exactly */
 .stTextInput > div > div > input {
-    border-radius: 8px;
-    border: 2px solid var(--primary-orange);
-    padding: 10px 14px;
-    background-color: var(--dark-gray);
-    color: var(--text-primary);
+    border-radius: 8px !important;
+    border: 2px solid var(--primary-orange) !important;
+    padding: 8px 16px !important;
+    background-color: var(--dark-gray) !important;
+    color: var(--text-primary) !important;
+    font-size: 16px !important;
+    line-height: 1.5 !important;
+    box-sizing: border-box !important;
 }
 
 .stTextInput > div > div > input:focus {
-    border-color: var(--primary-orange);
-    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2);
+    border-color: var(--primary-orange) !important;
+    box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.2) !important;
 }
 
 .stTextInput > div > div > input::placeholder {
-    color: var(--text-secondary);
+    color: var(--text-secondary) !important;
 }
 
 /* Tabs */

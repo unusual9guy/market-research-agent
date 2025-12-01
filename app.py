@@ -145,7 +145,6 @@ def main():
                 "**Company or Industry:**",
                 value=st.session_state.selected_company,
                 placeholder="e.g., Tesla, Automotive Industry",
-                help="Enter the name of any company or industry you want to analyze",
                 disabled=analysis_running
             )
             
