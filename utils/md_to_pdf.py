@@ -51,14 +51,14 @@ def convert_md_to_pdf(md_file_path: str, output_path: str = None) -> str:
                 }}
                 
                 h1 {{
-                    color: #ff6b35;
+                    color: #1a1a1a;
                     border-bottom: 3px solid #ff6b35;
                     padding-bottom: 10px;
                     font-weight: 700;
                 }}
                 
                 h2 {{
-                    color: #ff6b35;
+                    color: #1a1a1a;
                     border-bottom: 2px solid #e0e0e0;
                     padding-bottom: 8px;
                     margin-top: 30px;
@@ -120,7 +120,7 @@ def convert_md_to_pdf(md_file_path: str, output_path: str = None) -> str:
                     padding: 2px 4px;
                     border-radius: 3px;
                     font-family: 'Courier New', monospace;
-                    color: #ff6b35;
+                    color: #1a1a1a;
                 }}
                 
                 pre {{
@@ -164,15 +164,17 @@ def convert_md_to_pdf(md_file_path: str, output_path: str = None) -> str:
                 }}
                 
                 strong {{
-                    color: #ff6b35;
+                    color: #1a1a1a;
+                    font-weight: 700;
                 }}
                 
                 a {{
-                    color: #ff6b35;
-                    text-decoration: none;
+                    color: #1a1a1a;
+                    text-decoration: underline;
                 }}
                 
                 a:hover {{
+                    color: #666666;
                     text-decoration: underline;
                 }}
             </style>
