@@ -79,16 +79,18 @@
 
 /* Download Button */
 .stDownloadButton > button {
-    border-radius: 8px;
-    padding: 10px 24px;
-    font-weight: 600;
-    background-color: var(--primary-orange);
-    border: none;
-    color: white;
+    border-radius: 8px !important;
+    padding: 10px 24px !important;
+    font-weight: 600 !important;
+    background-color: var(--primary-orange) !important;
+    background: var(--primary-orange) !important;
+    border: none !important;
+    color: white !important;
 }
 
 .stDownloadButton > button:hover {
-    background-color: var(--dark-orange);
+    background-color: var(--dark-orange) !important;
+    background: var(--dark-orange) !important;
 }
 
 /* Text Input */
