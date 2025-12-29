@@ -53,7 +53,6 @@ class ExaSearcher:
                 num_results=self.max_results,
                 text=True,
                 start_published_date=(datetime.now() - timedelta(days=365)).isoformat(),  # Last year
-                use_autoprompt=True,  # Let Exa optimize the query
                 type="neural"  # Use neural search for better relevance
             )
             
@@ -85,7 +84,6 @@ class ExaSearcher:
                 num_results=self.max_results,
                 text=True,
                 start_published_date=(datetime.now() - timedelta(days=365)).isoformat(),
-                use_autoprompt=True,
                 type="neural"
             )
             
@@ -116,7 +114,6 @@ class ExaSearcher:
                 num_results=self.max_results,
                 text=True,
                 start_published_date=(datetime.now() - timedelta(days=180)).isoformat(),  # Last 6 months
-                use_autoprompt=True,
                 type="neural"
             )
             
@@ -148,7 +145,6 @@ class ExaSearcher:
                 num_results=self.max_results,
                 text=True,
                 start_published_date=(datetime.now() - timedelta(days=365)).isoformat(),
-                use_autoprompt=True,
                 type="neural"
             )
             
@@ -180,7 +176,6 @@ class ExaSearcher:
                 num_results=self.max_results,
                 text=True,
                 start_published_date=(datetime.now() - timedelta(days=365)).isoformat(),
-                use_autoprompt=True,
                 type="neural"
             )
             
@@ -212,7 +207,6 @@ class ExaSearcher:
                 num_results=self.max_results,
                 text=True,
                 start_published_date=(datetime.now() - timedelta(days=180)).isoformat(),
-                use_autoprompt=True,
                 type="neural"
             )
             
